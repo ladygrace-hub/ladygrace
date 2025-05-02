@@ -1,0 +1,2529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robinsons Bank Corporation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #343a40;
+    line-height: 1.7;
+    font-size: 16px;
+    overflow-x: hidden;
+}
+
+::selection {
+    background-color: rgba(1, 81, 46, 0.2);
+    color: #01512e;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(1, 81, 46, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(1, 81, 46, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(1, 81, 46, 0); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(135deg, #01512e, #023e23);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    color: #fff;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 3px 0 15px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    padding: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+#bank-logo {
+    max-width: 200px;
+    height: auto;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+    transition: all 0.5s ease;
+}
+
+#bank-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.15));
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 15px 0;
+}
+
+.sidebar nav ul li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    margin: 3px 8px;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar nav ul li:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+}
+
+.sidebar nav ul li a {
+    display: block;
+    padding: 14px 20px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    border-left: 4px solid transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar nav ul li a:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.sidebar nav ul li a:hover:before, .sidebar nav ul li a.active:before {
+    width: 100%;
+}
+
+.sidebar nav ul li a:hover, .sidebar nav ul li a.active {
+    color: #fff;
+    padding-left: 25px;
+    border-left: 4px solid #ffffff;
+}
+
+.sidebar nav ul li a i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.sidebar nav ul li a:hover i, .sidebar nav ul li a.active i {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Content Styles */
+.content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 20px 40px 60px;
+    max-width: 1200px;
+    animation: fadeIn 0.8s ease-out;
+    position: relative;
+}
+
+section {
+    opacity: 0;
+    display: none;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+section.active {
+    opacity: 1;
+    display: block;
+    transform: translateY(0);
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.pagination-controls button {
+    background: linear-gradient(45deg, #01512e, #03703f);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination-controls button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(1, 81, 46, 0.3);
+}
+
+.pagination-controls button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.page-indicator {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Products and Services Submenu */
+.products-submenu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.submenu-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #333;
+}
+
+.submenu-btn:hover, .submenu-btn.active {
+    background: linear-gradient(45deg, #01512e, #03703f);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 3px 10px rgba(1, 81, 46, 0.2);
+}
+
+.product-subsection {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.product-subsection.active {
+    display: block;
+}
+
+header {
+    text-align: center;
+    padding: 60px 0;
+    margin-bottom: 50px;
+    background: linear-gradient(to right, #ffffff, #f8f9fa);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.3s;
+    transition: all 0.5s ease;
+}
+
+header:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, #01512e, #03703f);
+}
+
+header:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(1, 81, 46, 0.05), transparent 60%);
+}
+
+header h1 {
+    color: #01512e;
+    margin-bottom: 20px;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+}
+
+header h1:after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 3px;
+    background-color: #01512e;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.5s ease;
+}
+
+header:hover h1:after {
+    width: 150px;
+}
+
+.tagline {
+    font-style: italic;
+    color: #666;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
+    z-index: 2;
+}
+
+.tagline:before, .tagline:after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 60px;
+    background: rgba(1, 81, 46, 0.2);
+    top: 50%;
+    transition: all 0.5s ease;
+}
+
+.tagline:before {
+    right: 100%;
+    margin-right: 20px;
+}
+
+.tagline:after {
+    left: 100%;
+    margin-left: 20px;
+}
+
+header:hover .tagline:before, header:hover .tagline:after {
+    width: 80px;
+}
+
+section {
+    background-color: #fff;
+    border-radius: 16px;
+    margin-bottom: 50px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    will-change: transform, box-shadow;
+}
+
+section:first-of-type {
+    margin-top: 0;
+}
+
+section:not(:first-of-type) {
+    margin-top: 20px;
+}
+
+section:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(1, 81, 46, 0.05), transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+section:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.07);
+}
+
+section h2 {
+    color: #01512e;
+    border-bottom: 2px solid rgba(1, 81, 46, 0.2);
+    padding-bottom: 16px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+section h2:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 80px;
+    height: 2px;
+    background-color: #01512e;
+    transition: width 0.5s ease;
+}
+
+section:hover h2:after {
+    width: 150px;
+}
+
+.section-content {
+    padding: 10px 0;
+    font-size: 1.05rem;
+    position: relative;
+    z-index: 1;
+}
+
+.section-content h3 {
+    color: #333;
+    margin: 28px 0 16px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.section-content h3:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #01512e;
+    transition: width 0.3s ease;
+}
+
+.section-content h3:hover:after {
+    width: 100%;
+}
+
+.section-content p, .section-content ul {
+    margin-bottom: 18px;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.section-content p:hover {
+    color: #333;
+}
+
+.section-content ul {
+    padding-left: 25px;
+}
+
+.section-content ul li {
+    margin-bottom: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.section-content ul li:hover {
+    transform: translateX(5px);
+}
+
+.section-content ul li:before {
+    content: '•';
+    color: #01512e;
+    font-weight: bold;
+    position: absolute;
+    left: -18px;
+    transition: all 0.3s ease;
+}
+
+.section-content ul li:hover:before {
+    transform: scale(1.3);
+}
+
+/* Special Sections Styling */
+.directors-list, .management-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.director, .executive {
+    background-color: #f9f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    text-align: center;
+}
+
+.director:before, .executive:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(1, 81, 46, 0.05), transparent);
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.director:hover:before, .executive:hover:before {
+    opacity: 1;
+}
+
+.director:hover, .executive:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+}
+
+.director .member-img-container, .executive .member-img-container {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid rgba(1, 81, 46, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.director:hover .member-img-container, .executive:hover .member-img-container {
+    border-color: rgba(1, 81, 46, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    animation: pulse 2s infinite;
+}
+
+.director .member-img, .executive .member-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.7s ease;
+    transform: scale(1);
+}
+
+.director:hover .member-img, .executive:hover .member-img {
+    transform: scale(1.1) rotate(3deg);
+}
+
+.position {
+    color: #01512e;
+    font-weight: 600;
+    margin: 12px 0;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+}
+
+.position:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: rgba(1, 81, 46, 0.3);
+    transition: width 0.5s ease;
+}
+
+.director:hover .position:after, .executive:hover .position:after {
+    width: 70px;
+}
+
+.awards-list li {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.awards-list li:hover {
+    background-color: rgba(1, 81, 46, 0.05);
+    padding-left: 20px;
+    border-bottom-color: rgba(1, 81, 46, 0.2);
+    box-shadow: 0 5px 15px rgba(1, 81, 46, 0.1);
+    transform: translateY(-3px);
+}
+
+.award-year {
+    font-weight: 600;
+    color: #fff;
+    background-color: #01512e;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+}
+
+.awards-list li:hover .award-year {
+    background-color: #03703f;
+    box-shadow: 0 3px 8px rgba(1, 81, 46, 0.2);
+}
+
+.award-title {
+    font-weight: 600;
+    color: #343a40;
+    transition: all 0.3s ease;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.awards-list li:hover .award-title {
+    color: #01512e;
+}
+
+.award-org {
+    color: #666;
+    font-style: italic;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    border-left: 3px solid rgba(1, 81, 46, 0.3);
+    padding-left: 10px;
+    margin-top: 5px;
+}
+
+.csr-initiatives {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.csr-item {
+    background-color: #f9f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.csr-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background-color: #01512e;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.csr-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+}
+
+.csr-item:hover:before {
+    width: 10px;
+}
+
+.csr-item h3 {
+    color: #01512e;
+    margin-top: 0;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+}
+
+.csr-item:hover h3 {
+    transform: translateX(5px);
+}
+
+.financial-data {
+    background-color: #f9f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+.note {
+    font-style: italic;
+    color: #777;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+.link-button {
+    display: inline-block;
+    padding: 14px 28px;
+    background: linear-gradient(45deg, #01512e, #03703f);
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: none;
+    font-weight: 500;
+    box-shadow: 0 8px 15px rgba(1, 81, 46, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.link-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.7s ease;
+}
+
+.link-button:hover:before {
+    left: 100%;
+}
+
+.link-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(1, 81, 46, 0.3);
+    letter-spacing: 1px;
+}
+
+.references-list li {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.references-list li:hover {
+    padding-left: 10px;
+    background-color: rgba(1, 81, 46, 0.02);
+    border-bottom-color: rgba(1, 81, 46, 0.2);
+}
+
+.references-list a {
+    color: #0056b3;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.references-list a:hover {
+    color: #01512e;
+}
+
+.references-list a:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #01512e;
+    transition: width 0.3s ease;
+}
+
+/* Organizational Chart Styles */
+.org-chart-container {
+    margin-top: 40px;
+    background-color: #f9f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.5s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.org-chart-container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.org-chart-image {
+    margin: 20px 0;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(1, 81, 46, 0.1);
+    transition: all 0.5s ease;
+}
+
+.org-chart-image:hover {
+    box-shadow: 0 12px 30px rgba(1, 81, 46, 0.2);
+    border-color: rgba(1, 81, 46, 0.3);
+}
+
+.org-structure-img {
+    max-width: 100%;
+    height: auto;
+    transition: all 0.5s ease;
+    display: block;
+}
+
+.org-chart-container:hover .org-structure-img {
+    transform: scale(1.02);
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    margin-top: 15px;
+    font-size: 0.95rem;
+}
+
+.references-list a:hover:after {
+    width: 100%;
+}
+
+.org-chart img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s ease;
+}
+
+.org-chart img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Financial Tables Styling */
+.financial-year {
+    margin-bottom: 40px;
+    background-color: #f9f9fa;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: perspective(1000px) rotateX(0deg);
+    transform-origin: center top;
+}
+
+.financial-year:hover {
+    transform: perspective(1000px) rotateX(2deg) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+}
+
+.financial-year h3 {
+    color: #01512e;
+    margin-top: 0;
+    font-size: 1.5em;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.financial-year h3:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #01512e;
+    transition: width 0.5s ease;
+}
+
+.financial-year:hover h3:after {
+    width: 120px;
+}
+
+.financial-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.financial-table th, .financial-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.financial-table th {
+    background: linear-gradient(45deg, #01512e, #03703f);
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.financial-table tr:last-child td {
+    border-bottom: none;
+}
+
+.financial-table tr {
+    transition: all 0.3s ease;
+}
+
+.financial-table tr:nth-child(even) {
+    background-color: rgba(0,0,0,0.02);
+}
+
+.financial-table tr:hover {
+    background-color: rgba(1, 81, 46, 0.05);
+    transform: translateX(5px);
+}
+
+.financial-table tr:hover td {
+    color: #01512e;
+}
+
+p.source {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 15px;
+    font-style: italic;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+p.source a {
+    color: #01512e;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px dotted rgba(1, 81, 46, 0.3);
+    position: relative;
+}
+
+p.source a:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: #01512e;
+    transition: width 0.3s ease;
+}
+
+p.source a:hover:after {
+    width: 100%;
+}
+
+p.source a:hover {
+    color: #03703f;
+}
+
+p.note {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-left: 4px solid #01512e;
+    margin-top: 30px;
+    font-size: 0.95em;
+    color: #555;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+}
+
+p.note:hover {
+    border-left-width: 8px;
+    transform: translateX(5px);
+    background-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* Team Section Styling */
+.team-members {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.team-member {
+    background-color: #ffffff;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    transform: translateY(0);
+}
+
+.team-member:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, #01512e, #03703f);
+    transition: height 0.5s ease;
+}
+
+.team-member:hover:before {
+    height: 10px;
+}
+
+.team-member:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+}
+
+.member-img-container {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid rgba(1, 81, 46, 0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.team-member:hover .member-img-container {
+    border-color: rgba(1, 81, 46, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    animation: pulse 2s infinite;
+}
+
+.member-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.7s ease;
+    transform: scale(1);
+}
+
+.team-member:hover .member-img {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.team-member h3 {
+    color: #01512e;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.team-member:hover h3 {
+    transform: translateY(-5px);
+}
+
+.member-role {
+    font-weight: 600;
+    color: #01512e;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    position: relative;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.member-role:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: rgba(1, 81, 46, 0.3);
+    transition: width 0.5s ease;
+}
+
+.team-member:hover .member-role:after {
+    width: 80px;
+}
+
+.member-info {
+    color: #555;
+    margin-bottom: 10px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.team-member:hover .member-info {
+    transform: translateY(-3px);
+    opacity: 1;
+}
+
+/* Disclaimer Section Styling */
+.disclaimer-box {
+    background-color: #f9f9fa;
+    padding: 35px;
+    border-radius: 16px;
+    border-left: 5px solid #e74c3c;
+    margin-top: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: perspective(1000px) rotateX(0deg);
+    transform-origin: center top;
+}
+
+.disclaimer-box:hover {
+    border-left-width: 10px;
+    transform: perspective(1000px) rotateX(2deg) translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+    background-color: #ffffff;
+}
+
+.disclaimer-box p {
+    margin-bottom: 20px;
+    font-size: 1em;
+    color: #444;
+    line-height: 1.8;
+    transition: all 0.3s ease;
+}
+
+.disclaimer-box p:last-child {
+    margin-bottom: 0;
+}
+
+#disclaimer h2 {
+    color: #e74c3c;
+    border-bottom-color: rgba(231, 76, 60, 0.2);
+}
+
+#disclaimer h2:after {
+    background-color: #e74c3c;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #222, #333);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    color: rgba(255, 255, 255, 0.8);
+    margin-left: 280px;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 -15px 35px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+footer:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #01512e, #03703f);
+}
+
+/* Floating Animation for certain elements */
+.float-animation {
+    animation: floatUp 5s ease-in-out infinite;
+}
+
+/* Add a glow effect on hover */
+.glow-on-hover {
+    transition: all 0.3s ease;
+}
+
+.glow-on-hover:hover {
+    box-shadow: 0 0 15px rgba(1, 81, 46, 0.5);
+}
+
+/* Animation class to be added with JavaScript */
+.animate-in {
+    animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .sidebar {
+        width: 240px;
+        transform: translateX(-240px);
+        transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        z-index: 1000;
+    }
+
+    .content, footer {
+        margin-left: 0;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    #toggle-menu {
+        display: block;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+        background: linear-gradient(45deg, #01512e, #03703f);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    #toggle-menu:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.25);
+    }
+}
+
+@media (max-width: 768px) {
+    .directors-list, .management-list, .csr-initiatives, .team-members {
+        grid-template-columns: 1fr;
+    }
+
+    .awards-list li {
+        flex-direction: column;
+    }
+
+    .award-year, .award-title, .award-org {
+        width: 100%;
+        margin: 3px 0;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    .tagline {
+        font-size: 1.2rem;
+    }
+
+    section {
+        padding: 30px 20px;
+    }
+
+    .team-member {
+        padding: 25px 20px;
+    }
+
+    .member-img-container {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Company Info Styling */
+.company-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: #f9f9fa;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.company-info:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, #01512e, #03703f);
+    transition: width 0.3s ease;
+}
+
+.company-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.company-info:hover:before {
+    width: 8px;
+}
+
+.company-logo-container {
+    flex: 0 0 300px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+
+.company-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: all 0.5s ease;
+}
+
+.company-info:hover .company-image {
+    transform: scale(1.03);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.company-details {
+    flex: 1;
+    min-width: 250px;
+}
+
+.company-details h3 {
+    margin-top: 0;
+    color: #01512e;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.company-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 8px;
+}
+
+.company-name:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #01512e;
+    transition: width 0.4s ease;
+}
+
+.company-info:hover .company-name:after {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .company-logo-container {
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .company-info {
+        flex-direction: column;
+        padding: 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo-container">
+                <img src="https://www.bluethumbcreatives.com/wp-content/uploads/2017/01/02-robinsonsbank_logogreen.png" alt="Robinsons Bank Logo" id="bank-logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#company-overview" class="active"><i class="fas fa-building"></i> Company Overview</a></li>
+                    <li><a href="#corporate-profile"><i class="fas fa-id-card"></i> Corporate Profile</a></li>
+                    <li><a href="#vision-mission"><i class="fas fa-eye"></i> Vision & Mission</a></li>
+                    <li><a href="#branches"><i class="fas fa-map-marker-alt"></i> Branches & Offices</a></li>
+                    <li><a href="#products-services"><i class="fas fa-briefcase"></i> Products & Services</a></li>
+                    <li><a href="#financial-highlights"><i class="fas fa-chart-line"></i> Financial Highlights</a></li>
+                    <li><a href="#awards"><i class="fas fa-trophy"></i> Awards & Recognitions</a></li>
+                    <li><a href="#organization"><i class="fas fa-sitemap"></i> Organizational Structure</a></li>
+                    <li><a href="#board-directors"><i class="fas fa-users"></i> Board of Directors</a></li>
+                    <li><a href="#management"><i class="fas fa-user-tie"></i> Management Committee</a></li>
+                    <li><a href="#capital-structure"><i class="fas fa-coins"></i> Capital Structure</a></li>
+                    <li><a href="#governance"><i class="fas fa-balance-scale"></i> Corporate Governance</a></li>
+                    <li><a href="#csr"><i class="fas fa-hands-helping"></i> Corporate Social Responsibility</a></li>
+                    <li><a href="#financial-reports"><i class="fas fa-file-invoice-dollar"></i> Financial Reports</a></li>
+                    <li><a href="#references"><i class="fas fa-book"></i> References</a></li>
+                    <li><a href="#team"><i class="fas fa-users-cog"></i> Our Team</a></li>
+                    <li><a href="#disclaimer"><i class="fas fa-exclamation-triangle"></i> Disclaimer</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="content">
+            <header>
+                <h1>Robinsons Bank Corporation</h1>
+                <p class="tagline">"Your Partner for Growth"</p>
+                <a href="https://www.robinsonsbank.com.ph/" target="_blank" class="link-button">Visit Official Website <i class="fas fa-external-link-alt"></i></a>
+            </header>
+
+            <section id="company-overview">
+                <h2>Company Overview</h2>
+                <div class="section-content">
+                    <div class="company-info">
+                        <div class="company-logo-container">
+                            <img src="https://www.jgsummit.com.ph/images/2020/06/24/7862bcfd0829e9d9190a4b598d05fa97a1731c36.jpg" alt="Robinsons Bank Building" class="company-image">
+                        </div>
+                        <div class="company-details">
+                            <h3>Name of the Company</h3>
+                            <p class="company-name">Robinsons Bank Corporation (RBank)</p>
+                        </div>
+                    </div>
+
+                    <h3>Background & History</h3>
+                    <p>Robinsons Bank Corporation, also known as RBank, was the financial services arm of the JG Summit Group of Companies, one of the fastest growing commercial banks in the Philippines in terms of capitalization and asset size. The bank was 60.0% owned by JG Summit Capital Services Corp. and 40.0% owned by Robinsons Retail Holdings, Inc.</p>
+
+                    <p>Robinsons Bank started as a savings bank in November 1997 amid the backdrop of the Asian financial crisis. In 2002, Robinsons Savings Bank acquired the branches of ABN Amro Savings Bank (Philippines), its licenses to operate the branches and bank deposit portfolio. This acquisition made Robinsons Savings Bank the seventh largest thrift bank during that period.</p>
+
+                    <p>In February 2010, Robinsons Savings Bank acquired the controlling interest of the Royal Bank of Scotland (Philippines). In August of the same year, Royal Bank of Scotland (Philippines) was renamed as Robinsons Bank Corporation. Then by December, Bangko Sentral ng Pilipinas (BSP) approved the merger of Robinsons Savings Bank and Robinsons Bank Corporation, with Robinsons Bank Corporation as the surviving entity.</p>
+
+                    <p>In 2012, BSP approved the Bank's move to acquire Legazpi Savings Bank (LSB). The acquisition of LSB opened up business lines and grew the target market for Robinsons Bank in the Bicol region. LSB became a wholly-owned subsidiary of Robinsons Bank.</p>
+
+                    <p>On September 30, 2022, Robinsons Bank together with the Bank of the Philippine Islands (BPI) disclosed their merger expected to complete by 2023, with BPI as the surviving entity. The merger took effect on January 1, 2024, with BPI targeting to complete its integration with the remaining branches of Robinsons Bank by October 2025.</p>
+
+                    <h3>Head Office Address</h3>
+                    <p>17th Floor, Galleria Corporate Center, EDSA corner Ortigas Avenue, Quezon City, Metro Manila, Philippines</p>
+                </div>
+            </section>
+
+            <section id="corporate-profile">
+                <h2>Corporate Profile</h2>
+                <div class="section-content">
+                    <p>Robinsons Bank Corporation was a commercial bank in the Philippines and a member of the JG Summit Group, one of the largest conglomerates in the country. The bank provided a diverse range of financial products and services designed for retail and corporate clients.</p>
+
+                    <h3>Subsidiaries</h3>
+                    <ul>
+                        <li>Legazpi Savings Bank, Inc. (LSB) - A thrift bank subsidiary that primarily served the Bicol Region</li>
+                    </ul>
+
+                    <a href="https://www.robinsonsbank.com.ph/" target="_blank" class="link-button">Visit Official Website <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </section>
+
+            <section id="vision-mission">
+                <h2>Vision, Mission, Goals, and Core Values</h2>
+                <div class="section-content">
+                    <h3>Vision</h3>
+                    <p>We are the Bank of Choice driven to fulfill your changing needs.</p>
+
+                    <h3>Mission</h3>
+                    <p>Aiming to be better everyday, committed to provide to the:</p>
+                    <ul>
+                        <li><strong>Customers:</strong> best experience</li>
+                        <li><strong>Employees:</strong> winning culture</li>
+                        <li><strong>Owners:</strong> outstanding returns</li>
+                        <li><strong>Community:</strong> responsive organization</li>
+                    </ul>
+
+                    <h3>Goals and Objectives</h3>
+                    <p>As outlined in their Roadmap 2024, the bank aimed to:</p>
+                    <ul>
+                        <li>Deliver targeted and tailored customer experience to accelerate acquisition and drive retention</li>
+                        <li>Expand distribution networks efficiently and cost-effectively to reach broader markets</li>
+                        <li>Strengthen organizational structure to support rapid growth</li>
+                        <li>Accelerate digital transformation and develop strong digital technology that drives innovation</li>
+                        <li>Develop a strong RBank brand</li>
+                    </ul>
+
+                    <h3>Core Values</h3>
+                    <ul>
+                        <li><strong>Concern for the Individual</strong></li>
+                        <li><strong>Excellence</strong></li>
+                        <li><strong>Leadership</strong></li>
+                        <li><strong>Teamwork</strong></li>
+                        <li><strong>Integrity</strong></li>
+                        <li><strong>Change</strong></li>
+                        <a href="https://www.robinsonsbank.com.ph/corporate-information/" target="_blank" class="link-button">Visit Official Mission and Vision Statement <i class="fas fa-external-link-alt"></i></a>
+
+                    </ul>
+
+                </div>
+
+            </section>
+
+            <section id="branches">
+                <h2>Branches and Offices</h2>
+                <div class="section-content">
+                    <p>Robinsons Bank Corporation operates an extensive network of branches across the Philippines, with a strategic focus on locations within and near Robinsons Malls and other commercial centers.</p>
+
+                    <p>The bank has branches in major cities and provinces including Metro Manila, Luzon, Visayas, and Mindanao.</p>
+
+                    <p>For a complete list of branches and ATM locations, please visit the official Robinsons Bank website.</p>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/branches-and-atm/" target="_blank" class="link-button">Visit Branches and Offices <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="products-services">
+                <h2>Products and Services</h2>
+                <div class="section-content">
+                    <!-- Products and Services Navigation -->
+                    <div class="products-submenu">
+                        <button class="submenu-btn active" data-target="deposit-products">Deposit Products</button>
+                        <button class="submenu-btn" data-target="loan-products">Loan Products</button>
+                        <button class="submenu-btn" data-target="digital-banking">Digital Banking</button>
+                        <button class="submenu-btn" data-target="card-products">Card Products</button>
+                        <button class="submenu-btn" data-target="investment-products">Investment Products</button>
+                        <button class="submenu-btn" data-target="business-solutions">Business Solutions</button>
+                    </div>
+
+                    <!-- Subsections -->
+                    <div class="product-subsection active" id="deposit-products">
+                        <h3>Deposit Products</h3>
+                        <ul>
+                            <li>ATM Savings</li>
+                            <li>IPONsurance</li>
+                            <li>Passbook Savings</li>
+                            <li>RBank Savings</li>
+                            <li>RRewards Savings</li>
+                            <li>Simplé Savings</li>
+                            <li>Tykecoon Savings</li>
+                            <li>US Dollar Savings</li>
+                            <li>Checking Account</li>
+                            <li>Peso Special Savings</li>
+                            <li>Peso Time Deposit</li>
+                            <li>US Dollar Time Deposit</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-subsection" id="loan-products">
+                        <h3>Loan Products</h3>
+                        <ul>
+                            <li>Auto Loan</li>
+                            <li>Housing Loan</li>
+                            <li>Motorcycle Loan</li>
+                            <li>Small Biz Loan</li>
+                            <li>Potato Corner Franchise Loan</li>
+                            <li>Corporate Salary Loan Program</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-subsection" id="digital-banking">
+                        <h3>Digital Banking Services</h3>
+                        <ul>
+                            <li>RBank Digital Online Banking</li>
+                            <li>RBank Sign Up</li>
+                            <li>RBankMo</li>
+                            <li>Rkansya</li>
+                            <li>Instabalé</li>
+                            <li>RBank Remit</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-subsection" id="card-products">
+                        <h3>Card Products</h3>
+                        <ul>
+                            <li>Robinsons Bank DOS Mastercard</li>
+                            <li>Robinsons Cashback Card</li>
+                            <li>VISA Debit Card</li>
+                            <li>Simple Savings Debit Card</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-subsection" id="investment-products">
+                        <h3>Investment Products</h3>
+                        <ul>
+                            <li>Treasury Products</li>
+                            <li>Trust and Investments</li>
+                            <li>Personal Management Trust</li>
+                            <li>Unit Investment Trust Fund</li>
+                            <li>Investment Management Account</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-subsection" id="business-solutions">
+                        <h3>Business Solutions</h3>
+                        <ul>
+                            <li>RBank Biz</li>
+                            <li>RBiz Digital Corporate</li>
+                            <li>Collections Services</li>
+                            <li>Disbursement Services</li>
+                            <li>Payroll Solutions</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/" target="_blank" class="link-button">Visit Products and Services <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="financial-highlights">
+                <h2>Operational/Financial Highlights</h2>
+                <div class="section-content">
+                    <p>Prior to its merger with BPI, Robinsons Bank demonstrated consistent growth in its financial performance over the years.</p>
+
+                    <p>The bank's financial performance was shaped by strategic initiatives under its Roadmap 2020, which focused on capacity building and core income growth. In 2015, the bank rolled out this strategic plan with an initial phase of capacity building. The second phase, focused on core income growth, commenced in 2016.</p>
+
+                    <p>By 2017, the bank significantly expanded its operations by oversubscribing its first Long-term Negotiable Certificates of Deposits (LTNCD) of Php4.1 billion. The launch of credit card products in the same year marked its entry into the credit card business.</p>
+
+                    <p>In 2020, the Bank launched a new 5-year strategic initiative, Roadmap 2024, which aimed to position the Bank among the Top 11-13 Philippine banks in terms of assets by 2024 via organic growth.</p>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/corporate-information/our-reports/" target="_blank" class="link-button">Visit Products and Services <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="awards">
+                <h2>Awards and Recognitions (Recent Years)</h2>
+                <div class="section-content">
+                    <!-- Products and Services Navigation -->
+                    <div class="products-submenu">
+                        <button class="submenu-btn active" data-target="awards-2021">2021</button>
+                        <button class="submenu-btn" data-target="awards-2020">2020</button>
+                        <button class="submenu-btn" data-target="awards-2019">2019</button>
+                    </div>
+
+                    <!-- 2021 Awards -->
+                    <div class="product-subsection active" id="awards-2021">
+                        <h3>2021 Awards</h3>
+                        <ul class="awards-list">
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Most Innovative Digital Banking Services – Philippines</span>
+                                <span class="award-org">The Global Economics Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Best Bancassurance Product – Philippines (IPONsurance)</span>
+                                <span class="award-org">The Global Economics Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Best Commercial Bank – Philippines</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Best Banking Credit Card Program – Philippines (Robinsons Bank DOS Mastercard)</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Best Bancassurance Product – Philippines (IPONsurance)</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Best Mobile Banking App – Philippines (RBank Digital)</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Fastest Growing Commercial Bank Philippines</span>
+                                <span class="award-org">Global Business Review Magazine Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Most Innovative Credit Card Philippines</span>
+                                <span class="award-org">Global Business Review Magazine Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Most Innovative Digital Banking Services Philippines</span>
+                                <span class="award-org">Global Business Review Magazine Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Best Commercial Bank Philippines</span>
+                                <span class="award-org">World Economic Magazine Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Most Innovative Digital Product (RBank Sign Up) Philippines</span>
+                                <span class="award-org">World Economic Magazine Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Most Innovative Banking Credit Card Program Philippines</span>
+                                <span class="award-org">World Economic Magazine Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Service Innovation of the Year (RBank Sign Up)</span>
+                                <span class="award-org">Asian Banking and Finance Retail Banking Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2021</span>
+                                <span class="award-title">Consumer Finance Product of the Year (GO!Salary Loan Online)</span>
+                                <span class="award-org">Asian Banking and Finance Retail Banking Awards</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 2020 Awards -->
+                    <div class="product-subsection" id="awards-2020">
+                        <h3>2020 Awards</h3>
+                        <ul class="awards-list">
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">Best Commercial Bank</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">Fastest Growing Commercial Bank</span>
+                                <span class="award-org">Global Business Outlook</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">Fastest Growing Retail Bank</span>
+                                <span class="award-org">Global Banking and Finance</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">GO!Salary Loan Online: Most Innovative Digital Transformation Initiative</span>
+                                <span class="award-org">The Global Economics</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">Mobile CI Application for GO! Motorsiklo: Most Innovative Digital Transformation Initiative</span>
+                                <span class="award-org">The Global Economics</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">GO! Motorsiklo: Best Automated Loan Process</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">RBank Sign Up: Most Innovative Retail Bank Product</span>
+                                <span class="award-org">International Business Magazine</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">RBank Sign Up: Omni-Experience Innovator</span>
+                                <span class="award-org">IDC DX Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">Outstanding Employer</span>
+                                <span class="award-org">Philippines Best Employer Brand Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2020</span>
+                                <span class="award-title">IPONsurance: 3rd Place Customer-Centric Culture Category</span>
+                                <span class="award-org">JG Pride in Performance</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 2019 Awards -->
+                    <div class="product-subsection" id="awards-2019">
+                        <h3>2019 Awards</h3>
+                        <ul class="awards-list">
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Best Commercial Bank</span>
+                                <span class="award-org">International Banker</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Fastest Growing Commercial Bank</span>
+                                <span class="award-org">Global Business Outlook</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Fastest Growing Retail Bank</span>
+                                <span class="award-org">Global Banking and Finance</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Simplé Savings: Most Innovative Banking Product</span>
+                                <span class="award-org">Global Business Outlook</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Robinsons Bank DOS Mastercard: Most Innovative Credit Card Product</span>
+                                <span class="award-org">Global Business Outlook</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Simplé Savings: Best Financial Inclusion Program</span>
+                                <span class="award-org">3rd Bank Marketing Awards</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Merchant Acquiring: Highest Percentage of Contactless Transactions</span>
+                                <span class="award-org">VISA Philippines</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Treasury IT Solutions Opics: Project of the Year</span>
+                                <span class="award-org">Finastra</span>
+                            </li>
+                            <li>
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Annual Report 2018: Silver Anvil Award - PR Tool</span>
+                                <span class="award-org">55th Anvil Awards</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="https://www.robinsonsbank.com.ph/awards/" target="_blank" class="link-button">View All Awards <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </section>
+
+            <section id="organization">
+                <h2>Organizational Structure</h2>
+                <div class="section-content">
+                    <p>The bank maintained a robust organizational structure that supported its strategic objectives and ensured proper governance and risk management.</p>
+                    <p>The Board of Directors was the highest governing body, overseeing various committees including Executive Committee, Corporate Governance Committee, Risk Oversight Committee, Audit Committee, Trust Committee, Related Party Transactions Committee, and IT Steering Committee.</p>
+                    <p>The Senior Management team, led by the President and CEO, was responsible for the day-to-day operations and implementation of the bank's strategy.</p>
+
+                    <div class="org-chart-container">
+                        <h3>Organizational Chart</h3>
+                        <div class="org-chart-image">
+                            <img src="https://www.robinsonsbank.com.ph/wp-content/uploads/2020/06/orgstructure3.jpg" alt="Robinsons Bank Organizational Structure" class="org-structure-img">
+                        </div>
+                        <a href="https://www.robinsonsbank.com.ph/corporate-information/company-profile/" target="_blank" class="link-button">View Organizational Chart <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="board-directors">
+                <h2>Profile of the Board of Directors</h2>
+                <div class="section-content">
+                    <div class="directors-list">
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReMo2tzdi1fvgFzXZZDuDvK-6Xgf6Z-joThw&s" alt="Lance Y. Gokongwei" class="member-img">
+                            </div>
+                            <h3>Lance Y. Gokongwei</h3>
+                            <p class="position">Chairman</p>
+                            <p class="bio">Mr. Gokongwei was the President and Chief Executive Officer of JG Summit Holdings, Inc., one of the largest conglomerates in the Philippines.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://www.robinsonsbank.com.ph/wp-content/uploads/2020/01/Frederick_GO.jpg" alt="Frederick D. Go" class="member-img">
+                            </div>
+                            <h3>Frederick D. Go</h3>
+                            <p class="position">Vice-Chairman</p>
+                            <p class="bio">Mr. Go was a key executive in the JG Summit Group and provided leadership to the bank's board.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://www.robinsonsbank.com.ph/wp-content/uploads/2020/01/Elfren_Sarte.jpg" alt="Elfren Antonio S. Sarte" class="member-img">
+                            </div>
+                            <h3>Elfren Antonio S. Sarte</h3>
+                            <p class="position">President & CEO</p>
+                            <p class="bio">Mr. Sarte led the executive management of the bank and was responsible for implementing the bank's strategies and policies.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFCV8DrPW8UZOrwzIeyVeO7Z4V7y4yqGuUKA&s" alt="Robina Y. Gokongwei-Pe" class="member-img">
+                            </div>
+                            <h3>Robina Y. Gokongwei-Pe</h3>
+                            <p class="position">Director</p>
+                            <p class="bio">Ms. Gokongwei-Pe was associated with Robinsons Retail Holdings, Inc., a major shareholder of the bank.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://www.jgsummit.com.ph/assets/img/bod/patrick-henry-c-go-headshot.webp" alt="Patrick Henry C. Go" class="member-img">
+                            </div>
+                            <h3>Patrick Henry C. Go</h3>
+                            <p class="position">Director</p>
+                            <p class="bio">Mr. Go brought valuable experience and perspective to the board's governance functions.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://www.robinsonsbank.com.ph/wp-content/uploads/2020/01/Omar_Mier.jpg" alt="Omar Byron T. Mier" class="member-img">
+                            </div>
+                            <h3>Omar Byron T. Mier</h3>
+                            <p class="position">Director</p>
+                            <p class="bio">Mr. Mier contributed his extensive banking experience to the bank's governance.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO3r-S4Mbn251TrTC5xGFrdu4A_3SKXJurSA&s" alt="Hermogenes S. Roxas" class="member-img">
+                            </div>
+                            <h3>Hermogenes S. Roxas</h3>
+                            <p class="position">Independent Director</p>
+                            <p class="bio">Mr. Roxas provided independent oversight as required by banking regulations.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx1-Pkeeed3hKYEr3CXrOhFyFYpxkPgrj80Q&s" alt="David C. Mercado" class="member-img">
+                            </div>
+                            <h3>David C. Mercado</h3>
+                            <p class="position">Independent Director</p>
+                            <p class="bio">Mr. Mercado contributed his expertise through independent assessment of the bank's operations.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Catalino S. Abacan" class="member-img">
+                            </div>
+                            <h3>Catalino S. Abacan</h3>
+                            <p class="position">Independent Director</p>
+                            <p class="bio">Mr. Abacan served as an independent voice in the bank's governance structure.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2qA5ynIdZTIqzpL3WtQiNni0doyKtGPodQw&s" alt="Roberto S. Gaerlan" class="member-img">
+                            </div>
+                            <h3>Roberto S. Gaerlan</h3>
+                            <p class="position">Independent Director</p>
+                            <p class="bio">Mr. Gaerlan provided independent oversight of the bank's operations.</p>
+                        </div>
+
+                        <div class="director">
+                            <div class="member-img-container">
+                                <img src="https://cdn.theorg.com/8e2d5531-8772-442e-b719-b21c2bf28d0b_medium.jpg" alt="Teodoro M. Panganiban" class="member-img">
+                            </div>
+                            <h3>Teodoro M. Panganiban</h3>
+                            <p class="position">Independent Director</p>
+                            <p class="bio">Mr. Panganiban contributed his expertise as an independent director.</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/corporate-information/company-profile/" target="_blank" class="link-button">View Board of Directors <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="management">
+                <h2>Profile of Management Committee</h2>
+                <div class="section-content">
+                    <div class="management-list">
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Elfren Antonio S. Sarte" class="member-img">
+                            </div>
+                            <h3>Elfren Antonio S. Sarte</h3>
+                            <p class="position">President and CEO</p>
+                            <p class="bio">Mr. Sarte led the overall management and strategic direction of the bank.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Eric B. Santos" class="member-img">
+                            </div>
+                            <h3>Eric B. Santos</h3>
+                            <p class="position">Executive Vice President</p>
+                            <p class="bio">Mr. Santos was a key member of the bank's executive management team.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Andro M. Yee" class="member-img">
+                            </div>
+                            <h3>Andro M. Yee</h3>
+                            <p class="position">Executive Vice President</p>
+                            <p class="bio">Mr. Yee played a significant role in the bank's executive leadership.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTut_zVDO4QRm1hjjewiU3hp89nUo7Q_IfW_Q&s" alt="Ma. Regina N. Lumain" class="member-img">
+                            </div>
+                            <h3>Ma. Regina N. Lumain</h3>
+                            <p class="position">Executive Vice President</p>
+                            <p class="bio">Ms. Lumain contributed her leadership to the bank's executive management.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Exequiel T. Tua" class="member-img">
+                            </div>
+                            <h3>Exequiel T. Tua</h3>
+                            <p class="position">Senior Vice President</p>
+                            <p class="bio">Mr. Tua was part of the bank's senior leadership team.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Ma. Ellen A. Victor" class="member-img">
+                            </div>
+                            <h3>Ma. Ellen A. Victor</h3>
+                            <p class="position">Senior Vice President</p>
+                            <p class="bio">Ms. Victor was a key member of the bank's senior management.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Salvador D. Paps" class="member-img">
+                            </div>
+                            <h3>Salvador D. Paps</h3>
+                            <p class="position">Senior Vice President</p>
+                            <p class="bio">Mr. Paps contributed his expertise to the bank's senior leadership.</p>
+                        </div>
+
+                        <div class="executive">
+                            <div class="member-img-container">
+                                <img src="data:image/jpeg;base64,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" alt="Mykel D. Abad" class="member-img">
+                            </div>
+                            <h3>Mykel D. Abad</h3>
+                            <p class="position">Senior Vice President</p>
+                            <p class="bio">Mr. Abad was also the President of Legazpi Savings Bank, the bank's subsidiary.</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/corporate-information/company-profile/" target="_blank" class="link-button">View Mangement Team <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="capital-structure">
+                <h2>Capital Structure and Adequacy</h2>
+                <div class="section-content">
+                    <p>Robinsons Bank maintained a strong capital position, exceeding the minimum requirements set by the Bangko Sentral ng Pilipinas (BSP) and international standards.</p>
+
+                    <h3>Major Shareholders</h3>
+                    <ul>
+                        <li>JG Summit Capital Services Corp.: 60%</li>
+                        <li>Robinsons Retail Holdings, Inc.: 40%</li>
+                    </ul>
+
+                    <p>The bank's solid capital structure allowed it to support business growth while maintaining financial stability. As a subsidiary of JG Summit Holdings, the bank benefited from the conglomerate's strong financial backing.</p>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/corporate-information/our-reports/" target="_blank" class="link-button">View More on Capital Structure <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="governance">
+                <h2>Corporate Governance</h2>
+                <div class="section-content">
+                    <p>Robinsons Bank was committed to maintaining the highest standards of corporate governance in line with industry best practices and regulatory requirements.</p>
+
+                    <p>The bank's corporate governance framework was guided by the principles of transparency, accountability, fairness, and responsibility.</p>
+
+                    <h3>Board Governance</h3>
+                    <p>The Board of the Bank represented the owners' interests in the Bank's objective to sustainably increase shareholder value and to ensure the long-term success of the business. The Board was actively responsible for ensuring that the Bank was properly managed in attaining this objective.</p>
+
+                    <h3>Board Committees</h3>
+                    <ul>
+                        <li>Executive Committee</li>
+                        <li>Corporate Governance Committee</li>
+                        <li>Risk Oversight Committee</li>
+                        <li>Audit Committee</li>
+                        <li>Trust Committee</li>
+                        <li>Related Party Transactions Committee</li>
+                        <li>IT Steering Committee</li>
+                    </ul>
+
+                    <h3>Compliance System</h3>
+                    <p>The bank maintained a robust Compliance Risk Management System as an integral component of its culture and risk governance framework. This ensured adherence to laws, regulations, and best practices in banking.</p>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/wp-content/uploads/2020/06/RBank_AR2019_Corporate-Governance.pdf" target="_blank" class="link-button">View Corporate Governance <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="csr">
+                <h2>Corporate Social Responsibility</h2>
+                <div class="section-content">
+                    <p>In line with JG Summit Conglomerate's endeavor of leading the country to global competitiveness and making life better for every Filipino, the bank upheld its aim to be better every day through various CSR initiatives.</p>
+
+                    <div class="csr-initiatives">
+                        <div class="csr-item">
+                            <h3>Financial Literacy Programs</h3>
+                            <p>Conducted educational campaigns to help communities better understand financial management and responsible banking practices.</p>
+                        </div>
+
+                        <div class="csr-item">
+                            <h3>Environmental Conservation Efforts</h3>
+                            <p>Engaged in tree planting activities and supported environmental protection initiatives aligned with sustainable development goals.</p>
+                        </div>
+
+                        <div class="csr-item">
+                            <h3>Disaster Relief Operations</h3>
+                            <p>Provided assistance to communities affected by natural disasters, demonstrating the bank's commitment to social responsibility during crises.</p>
+                        </div>
+
+                        <div class="csr-item">
+                            <h3>Education Support</h3>
+                            <p>Implemented scholarship programs and contributed to school facility improvements to support educational development in underserved communities.</p>
+                        </div>
+
+                        <div class="csr-item">
+                            <h3>Community Development</h3>
+                            <p>Supported local livelihood programs and community infrastructure projects to foster economic growth at the grassroots level.</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.robinsonsbank.com.ph/" target="_blank" class="link-button">View Sustainability Page here <i class="fas fa-external-link-alt"></i></a>
+
+            </section>
+
+            <section id="financial-reports">
+                <h2>Financial Statement Reports</h2>
+                <div class="section-content">
+                    <p>As part of its commitment to transparency, Robinsons Bank regularly published its financial statements and annual reports. Below are the key financial highlights from three consecutive years prior to its merger with BPI:</p>
+
+                    <div class="financial-year">
+                        <h3>2022 Financial Highlights</h3>
+                        <table class="financial-table">
+                            <tr>
+                                <th>Key Financial Indicators</th>
+                                <th>Amount (in Philippine Peso)</th>
+                            </tr>
+                            <tr>
+                                <td>Total Assets</td>
+                                <td>₱175.9 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Total Loans (Net)</td>
+                                <td>₱102.4 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Total Deposits</td>
+                                <td>₱139.9 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Net Income</td>
+                                <td>₱1.02 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Capital Adequacy Ratio</td>
+                                <td>14.67%</td>
+                            </tr>
+                            <tr>
+                                <td>Return on Equity</td>
+                                <td>6.23%</td>
+                            </tr>
+                        </table>
+                        <p class="source">Source: <a href="https://www.bpiexpressonline.com/media/uploads/5f72f063/BPI_2023_SEC_17A_Annual_Report.pdf" target="_blank">BPI 2023 Annual Report (p.312-314)</a> - BPI SEC 17-A Disclosure with Robinsons Bank Financial Data</p>
+                    </div>
+
+                    <div class="financial-year">
+                        <h3>2021 Financial Highlights</h3>
+                        <table class="financial-table">
+                            <tr>
+                                <th>Key Financial Indicators</th>
+                                <th>Amount (in Philippine Peso)</th>
+                            </tr>
+                            <tr>
+                                <td>Total Assets</td>
+                                <td>₱163.7 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Total Loans (Net)</td>
+                                <td>₱96.3 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Total Deposits</td>
+                                <td>₱132.4 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Net Income</td>
+                                <td>₱1.22 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Capital Adequacy Ratio</td>
+                                <td>14.62%</td>
+                            </tr>
+                            <tr>
+                                <td>Return on Equity</td>
+                                <td>7.56%</td>
+                            </tr>
+                        </table>
+                        <p class="source">Source: <a href="https://edge.pse.com.ph/openDiscViewer.do?edge_no=a0ec69060554605d3470cea4b051ca8f" target="_blank">JG Summit Holdings, Inc. SEC 17-A (2021)</a> - Parent Company Annual Report</p>
+                    </div>
+
+                    <div class="financial-year">
+                        <h3>2020 Financial Highlights</h3>
+                        <table class="financial-table">
+                            <tr>
+                                <th>Key Financial Indicators</th>
+                                <th>Amount (in Philippine Peso)</th>
+                            </tr>
+                            <tr>
+                                <td>Total Assets</td>
+                                <td>₱151.2 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Total Loans (Net)</td>
+                                <td>₱86.9 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Total Deposits</td>
+                                <td>₱117.4 billion</td>
+                            </tr>
+                            <tr>
+                                <td>Net Income</td>
+                                <td>₱935.1 million</td>
+                            </tr>
+                            <tr>
+                                <td>Capital Adequacy Ratio</td>
+                                <td>14.03%</td>
+                            </tr>
+                            <tr>
+                                <td>Return on Equity</td>
+                                <td>5.95%</td>
+                            </tr>
+                        </table>
+                        <p class="source">Source: <a href="https://edge.pse.com.ph/openDiscViewer.do?edge_no=e18d7a9953f549115d542af6f1e997b9" target="_blank">JG Summit Holdings, Inc. SEC 17-A (2020)</a> - Parent Company Annual Report</p>
+                    </div>
+
+                    <p class="note">Note: Following the merger with BPI on January 1, 2024, the financial reporting continues under the BPI entity as the surviving institution. These financial statements were sourced from official regulatory filings with the Securities and Exchange Commission (SEC) and Philippine Stock Exchange (PSE).</p>
+                </div>
+            </section>
+
+            <section id="references">
+                <h2>References</h2>
+                <div class="section-content">
+                    <ul class="references-list">
+                        <li>Robinsons Bank Corporation Official Website: <a href="https://www.robinsonsbank.com.ph" target="_blank">https://www.robinsonsbank.com.ph</a></li>
+                        <li>Robinsons Bank Company Overview: <a href="https://www.robinsonsbank.com.ph/corporate-information/" target="_blank">https://www.robinsonsbank.com.ph/corporate-information/</a></li>
+                        <li>Robinsons Bank Corporate Governance: <a href="https://www.robinsonsbank.com.ph/corporate-information/corporate-governance/" target="_blank">https://www.robinsonsbank.com.ph/corporate-information/corporate-governance/</a></li>
+                        <li>Robinsons Bank Company Profile: <a href="https://www.robinsonsbank.com.ph/corporate-information/company-profile/" target="_blank">https://www.robinsonsbank.com.ph/corporate-information/company-profile/</a></li>
+                        <li>Wikipedia - Robinsons Bank: <a href="https://en.wikipedia.org/wiki/Robinsons_Bank" target="_blank">https://en.wikipedia.org/wiki/Robinsons_Bank</a></li>
+                        <li>Bangko Sentral ng Pilipinas (BSP): <a href="https://www.bsp.gov.ph" target="_blank">https://www.bsp.gov.ph</a></li>
+                        <li>JG Summit Holdings, Inc.: <a href="https://www.jgsummit.com.ph" target="_blank">https://www.jgsummit.com.ph</a></li>
+                        <li>Bank of the Philippine Islands (BPI) - Merger Information: <a href="https://www.bpi.com.ph" target="_blank">https://www.bpi.com.ph</a></li>
+                        <li>BusinessWorld Online: "BPI expects to complete rebranding of Robinsons Bank branches by October", March 4, 2025</li>
+                        <li>INQUIRER.net: "BPI, Robinsons Bank confirm merger agreement", September 30, 2022</li>
+                    </ul>
+                    <p class="note">Note: All information presented on this website is for educational purposes only and has been compiled from publicly available sources.</p>
+                </div>
+            </section>
+
+            <section id="team">
+                <h2>Our Team</h2>
+                <div class="section-content">
+                    <p>This project was developed by:</p>
+                    <div class="team-members">
+                        <div class="team-member">
+                            <div class="member-img-container">
+                                <img src="https://scontent.fcgy2-3.fna.fbcdn.net/v/t39.30808-6/486829845_1403476967489556_7359928859756010957_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFe1r4Y0LnnxJ8yRMx482_THDYr_L604TQcNiv8vrThNGgX39dj2hPZzEOUAy2oFM7kBYNVHyGZ6Zx-ntIUtFDu&_nc_ohc=5AWwNccfOtsQ7kNvwFtcXSp&_nc_oc=AdmQrV3f5FLXJapuD5HLAJImX0lrIrUwHpnZtz5awYWxtRaSdjapzJPTHTwXFUNmapw&_nc_zt=23&_nc_ht=scontent.fcgy2-3.fna&_nc_gid=0bjBL9VLikPnOqHOud7hGg&oh=00_AfHWLSPucAVsRYBJoxFX8d_VHMV-SkrVJTM2O6kQ2IUBAg&oe=680A8B4D" alt="Team Member 1" class="member-img">
+                            </div>
+                            <h3>Lady grace A. Ayoan</h3>
+                            <p class="member-role">BSBA STUDENT</p>
+
+                        </div>
+
+                        <div class="team-member">
+                            <div class="member-img-container">
+                                <img src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t39.30808-6/474468260_1318121375817109_6820031474056766924_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeF-5xc3Zzl0MvbSb2XenjkPaWdZqcchm1dpZ1mpxyGbV6d2Wq3tKAJSImKhKz9pZKFrW2f9r3BbHP35DnmeON9j&_nc_ohc=32si4RAeyWwQ7kNvwF1CDIw&_nc_oc=AdkQMrByHtJVE9WYVILQKgo18fEcpRPJX0bRiNmfTPi_Jxo8fpYAGxjENQRGuoMur7o&_nc_zt=23&_nc_ht=scontent.fcgy2-1.fna&_nc_gid=_tJdXu5L1T0mjjECLTyoXA&oh=00_AfGlc0NZZibcT8KwBVIXBwf-e4paQFoLVMkcFgoGuMUo4A&oe=680ABCD3" alt="Team Member 1" class="member-img">
+                            </div>
+                            <h3>Wendy D. Tam-is</h3>
+                            <p class="member-role">BSBA STUDENT</p>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="disclaimer">
+                <h2>Disclaimer</h2>
+                <div class="section-content">
+                    <div class="disclaimer-box">
+                        <p>This website has been created solely for academic purposes as part of a student project. It is not affiliated with, endorsed by, or connected to Robinsons Bank Corporation, Bank of the Philippine Islands, JG Summit Holdings, Inc., or any of their subsidiaries or affiliates.</p>
+
+                        <p>The information contained on this website has been compiled from publicly available sources and is presented for educational purposes only. While we have made every effort to ensure the accuracy of the information provided, we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information contained on this website.</p>
+
+                        <p>As of January 1, 2024, Robinsons Bank Corporation has merged with Bank of the Philippine Islands (BPI). Any reference to Robinsons Bank as a current entity is for historical context only.</p>
+
+                        <p>All logos, trademarks, and company names are the property of their respective owners and are used here for identification purposes only.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Student Project. This website was created for academic purposes only. Robinsons Bank Corporation merged with BPI as of January 1, 2024.</p>
+        <div class="footer-links">
+        </div>
+    </footer>
+
+    <style>
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+        }
+    </style>
+
+    <script >
+
+        // Wait for DOM to fully load before running scripts
+window.addEventListener('DOMContentLoaded', () => {
+    // Elements
+    const sidebar = document.querySelector('.sidebar');
+    const toggleMenu = document.getElementById('toggle-menu');
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('nav a');
+    const content = document.querySelector('.content');
+
+    // Variables for pagination
+    let currentSectionIndex = 0;
+    const totalSections = sections.length;
+
+    // Create pagination controls
+    const paginationControls = document.createElement('div');
+    paginationControls.className = 'pagination-controls';
+    paginationControls.innerHTML = `
+        <button id="prev-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+        <div class="page-indicator">Page <span id="current-page">1</span> of <span id="total-pages">${totalSections}</span></div>
+        <button id="next-btn"><i class="fas fa-arrow-right"></i> Next</button>
+    `;
+
+    // Append pagination controls to content
+    content.appendChild(paginationControls);
+
+    // Get pagination elements
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currentPageSpan = document.getElementById('current-page');
+
+    // Add floating animation to logo container
+    const logoContainer = document.querySelector('.logo-container');
+    if (logoContainer) logoContainer.classList.add('float-animation');
+
+    // Add hover glow effect to buttons and important elements
+    const buttons = document.querySelectorAll('.link-button');
+    buttons.forEach(button => {
+        button.classList.add('glow-on-hover');
+    });
+
+    // Toggle menu for mobile
+    if (toggleMenu && sidebar) {
+        toggleMenu.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    }
+
+    // Get header element
+    const header = document.querySelector('header');
+
+    // Function to show a specific section
+    function showSection(index) {
+        // Hide all sections
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // Show the selected section
+        sections[index].classList.add('active');
+
+        // Update current page indicator
+        currentPageSpan.textContent = index + 1;
+
+        // Update button states
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === totalSections - 1;
+
+        // Update active nav link
+        const sectionId = sections[index].getAttribute('id');
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+            }
+        });
+
+        // Show or hide header based on section
+        if (index === 0) {
+            // Show header only for the first section (company overview)
+            header.style.display = 'block';
+            header.style.height = 'auto';
+            header.style.opacity = '1';
+            header.style.visibility = 'visible';
+            header.style.marginBottom = '50px';
+        } else {
+            // Hide header for all other sections
+            header.style.display = 'none';
+            header.style.height = '0';
+            header.style.opacity = '0';
+            header.style.visibility = 'hidden';
+            header.style.marginBottom = '0';
+        }
+
+        // Scroll to top of the section
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Event listeners for pagination buttons
+    prevBtn.addEventListener('click', function() {
+        if (currentSectionIndex > 0) {
+            currentSectionIndex--;
+            showSection(currentSectionIndex);
+        }
+    });
+
+    nextBtn.addEventListener('click', function() {
+        if (currentSectionIndex < totalSections - 1) {
+            currentSectionIndex++;
+            showSection(currentSectionIndex);
+        }
+    });
+
+    // Smooth scroll for navigation links
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+
+                const targetIdWithoutHash = targetId.substring(1); // Remove the # from the href
+
+                // Find the index of the section with this ID
+                const targetIndex = Array.from(sections).findIndex(section => section.id === targetIdWithoutHash);
+
+                if (targetIndex !== -1) {
+                    // For mobile: close sidebar if it's open
+                    if (window.innerWidth < 992 && sidebar) {
+                        sidebar.classList.remove('active');
+                    }
+
+                    // Update current section index and show the section
+                    currentSectionIndex = targetIndex;
+                    showSection(currentSectionIndex);
+                }
+            }
+        });
+    });
+
+    // Initialize by showing the first section (company overview)
+    currentSectionIndex = 0;
+    showSection(currentSectionIndex);
+
+    // Make sure header is visible for the first section
+    header.style.display = 'block';
+    header.style.height = 'auto';
+    header.style.opacity = '1';
+    header.style.visibility = 'visible';
+    header.style.marginBottom = '50px';
+
+    // Products and Services Submenu
+    const submenuButtons = document.querySelectorAll('.submenu-btn');
+    const productSubsections = document.querySelectorAll('.product-subsection');
+
+    submenuButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            submenuButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            // Hide all subsections
+            productSubsections.forEach(subsection => {
+                subsection.classList.remove('active');
+            });
+
+            // Show the target subsection
+            const targetId = button.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+});
+    </script>
+</body>
+</html>
