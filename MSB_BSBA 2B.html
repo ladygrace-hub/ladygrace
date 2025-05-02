@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malayan Savings Bank (MSB)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0c4c8a;
+            --primary-light: #1a5fa0;
+            --primary-dark: #083968;
+            --secondary-color: #00a896;
+            --secondary-light: #14baa7;
+            --accent-color: #f8c630;
+            --accent-light: #ffd452;
+            --text-color: #2d3748;
+            --text-light: #718096;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --sidebar-width: 280px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --border-radius: 8px;
+            --section-spacing: 60px;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.7;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            background-color: var(--light-bg);
+            position: relative;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--primary-dark);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* Background pattern */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(var(--primary-color) 2px, transparent 2px),
+                radial-gradient(var(--primary-color) 2px, transparent 2px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.03;
+            z-index: -1;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 0 25px 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .sidebar-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .sidebar-header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .sidebar-header img:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .sidebar-menu {
+            margin-top: 30px;
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            padding: 0;
+            transition: var(--transition);
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            font-weight: 400;
+            position: relative;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .sidebar-menu a:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background-color: var(--secondary-color);
+            opacity: 0.2;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu li:hover a:before {
+            width: 4px;
+        }
+
+        .sidebar-menu li:hover a {
+            color: var(--accent-color);
+            padding-left: 30px;
+        }
+
+        .sidebar-menu li:hover a i {
+            color: var(--accent-color);
+        }
+
+        /* Active sidebar link */
+        .sidebar-menu li.active a:before {
+            width: 4px;
+            background-color: var(--accent-color);
+            opacity: 1;
+        }
+
+        .sidebar-menu li.active a {
+            color: var(--accent-color);
+            padding-left: 30px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu li.active a i {
+            color: var(--accent-color);
+        }
+
+        /* Main content styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 40px;
+            position: relative;
+        }
+
+        section {
+            margin-bottom: var(--section-spacing);
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-bg);
+            position: relative;
+            display: inline-block;
+        }
+
+        section h2:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 70px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            margin: 25px 0 15px;
+            color: var(--primary-color);
+        }
+
+        section h4 {
+            font-size: 1.25rem;
+            margin: 20px 0 10px;
+            color: var(--text-color);
+        }
+
+        /* Section badges */
+        .section-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            padding: 8px 15px;
+            background: rgba(0, 168, 150, 0.1);
+            color: var(--secondary-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-badge i {
+            margin-right: 8px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        table, th, td {
+            border: none;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        /* Cards for profiles */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .profile-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image {
+            height: 400px; /* Increased from 300px to 350px */
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .profile-image img:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-details {
+            padding: 20px;
+        }
+
+        .profile-details h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .profile-details p {
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                padding: 30px;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            .section-badge {
+                position: relative;
+                top: 0;
+                right: 0;
+                display: inline-flex;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 260px;
+            }
+
+            .sidebar {
+                width: 0;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                width: var(--sidebar-width);
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            section {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+
+            .toggle-sidebar {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background-color: var(--primary-color);
+                color: var(--white);
+                border: none;
+                border-radius: 50%;
+                width: 45px;
+                height: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+                transition: var(--transition);
+            }
+
+            .toggle-sidebar:hover {
+                background-color: var(--primary-dark);
+            }
+
+            .toggle-sidebar i {
+                font-size: 1.2rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 15px;
+            }
+
+            section h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Custom Elements */
+        .tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: rgba(0, 168, 150, 0.1);
+            color: var(--secondary-color);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* References & Disclaimer */
+        .references-list li {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .references-list li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .disclaimer-box {
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border-left: 5px solid #e63946;
+            margin-top: 20px;
+        }
+
+        .disclaimer-box p {
+            margin-bottom: 15px;
+        }
+
+        .disclaimer-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* CSR Initiatives */
+        .csr-item {
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: rgba(248, 250, 252, 0.5);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .csr-item:hover {
+            transform: translateX(5px);
+            background-color: rgba(248, 250, 252, 0.8);
+        }
+
+        .csr-item h4 {
+            display: flex;
+            align-items: center;
+            margin-top: 0;
+        }
+
+        .csr-item h4 i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        .csr-item p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Financial highlights indicator */
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            font-size: 0.85rem;
+        }
+
+        .trend-up {
+            color: #38a169;
+        }
+
+        .trend-down {
+            color: #e53e3e;
+        }
+
+        /* Page Navigation Styles */
+        .section-page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .page-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-bg);
+        }
+
+        .page-navigation button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .page-navigation button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .page-navigation button:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .page-navigation button i {
+            margin-right: 8px;
+        }
+
+        .page-navigation button:last-child i {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        .page-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2ezw-HymfZvyTINsBwW0qB53Y14V0tbByIQ&s" alt="MSB Logo">
+            <h2>Malayan Savings Bank</h2>
+            <p>Strengthening Communities, Building Futures</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#company-info"><i class="fas fa-building"></i> Company Information</a></li>
+            <li><a href="#corporate-profile"><i class="fas fa-briefcase"></i> Corporate Profile</a></li>
+            <li><a href="#vision-mission"><i class="fas fa-eye"></i> Vision & Mission</a></li>
+            <li><a href="#branches"><i class="fas fa-map-marker-alt"></i> Branches & Offices</a></li>
+            <li><a href="#business-scope"><i class="fas fa-chart-network"></i> Business Scope</a></li>
+            <li><a href="#products-services"><i class="fas fa-box-open"></i> Products & Services</a></li>
+            <li><a href="#financial-highlights"><i class="fas fa-chart-line"></i> Financial Highlights</a></li>
+            <li><a href="#awards"><i class="fas fa-trophy"></i> Awards & Recognitions</a></li>
+            <li><a href="#org-structure"><i class="fas fa-sitemap"></i> Organizational Structure</a></li>
+            <li><a href="#board-directors"><i class="fas fa-user-tie"></i> Board of Directors</a></li>
+            <li><a href="#management"><i class="fas fa-users-cog"></i> Management Committee</a></li>
+            <li><a href="#capital-structure"><i class="fas fa-coins"></i> Capital Structure</a></li>
+            <li><a href="#governance"><i class="fas fa-balance-scale"></i> Corporate Governance</a></li>
+            <li><a href="#csr"><i class="fas fa-hands-helping"></i> Social Responsibility</a></li>
+            <li><a href="#financial-statements"><i class="fas fa-file-invoice-dollar"></i> Financial Statements</a></li>
+            <li><a href="#our-team"><i class="fas fa-users"></i> Our Team</a></li>
+            <li><a href="#references"><i class="fas fa-book"></i> References</a></li>
+            <li><a href="#disclaimer"><i class="fas fa-exclamation-circle"></i> Disclaimer</a></li>
+        </ul>
+    </aside>
+
+    <!-- Mobile sidebar toggle -->
+    <button class="toggle-sidebar" style="display: none;">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="current-page-title" style="margin-bottom: 20px; padding: 15px; background-color: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow); display: flex; align-items: center; justify-content: space-between;">
+            <h1 style="margin: 0; font-size: 1.5rem; color: var(--primary-color);"></h1>
+            <div class="page-controls" style="display: flex; gap: 10px; align-items: center;">
+                <button id="prev-page-btn" style="background-color: var(--primary-color); color: var(--white); border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; transition: var(--transition);">
+                    <i class="fas fa-arrow-left" style="margin-right: 5px;"></i> Previous
+                </button>
+                <div id="page-counter" style="padding: 0 15px; font-size: 0.9rem; color: var(--text-light);"></div>
+                <button id="next-page-btn" style="background-color: var(--primary-color); color: var(--white); border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; transition: var(--transition);">
+                    Next <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
+                </button>
+            </div>
+        </div>
+        <section id="company-info">
+            <div class="section-badge"><i class="fas fa-info-circle"></i> About Us</div>
+            <h2>Company Information</h2>
+            <div class="company-details">
+                <div class="company-header" style="display: flex; align-items: center; margin-bottom: 25px;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNq0RXibxBxgSwgbXrxkCXHA-OLO2B-97-XA&s" alt="MSB Building" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px; margin-right: 25px; box-shadow: var(--box-shadow);">
+                    <div>
+                        <h3 style="margin-top: 0;">Malayan Savings Bank (MSB)</h3>
+                        <p class="tag"><i class="fas fa-tag"></i> Dahil sa MSB, Kaya 'Yan!</p>
+                        <p style="margin-top: 10px;">Established 1996 | Savings Bank | Philippines</p>
+                    </div>
+                </div>
+
+                <h4><i class="fas fa-history"></i> History & Background</h4>
+                <div style="padding-left: 25px; border-left: 3px solid var(--secondary-light); margin-bottom: 25px;">
+                    <p>Malayan Savings Bank was established in 1996 as a savings and mortgage bank in the Philippines. Since then, it has built a reputation as a reliable financial institution offering a wide range of balanced financial services. The bank celebrated its 25th anniversary with a fresh look and new tagline, continuing its commitment to serving Filipino families and businesses.</p>
+                    <p>As its full name "Malayan Bank Savings and Mortgage Bank, Inc." indicates, the bank's main focus is on personal savings and mortgage products. With 21 branches located across the Philippines, Malayan Bank is positioned to meet the needs of Filipinos nationwide.</p>
+                    <p>The bank operates under the regulation of the Bangko Sentral ng Pilipinas (BSP), the central monetary authority of the Philippines. MSB is committed to maintaining a respected position as one of the country's top savings banks in terms of stability and strength.</p>
+                </div>
+
+                <div class="contact-info" style="background-color: var(--light-bg); padding: 20px; border-radius: var(--border-radius); display: flex; flex-wrap: wrap; gap: 20px;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="margin-top: 0;"><i class="fas fa-map-marker-alt"></i> Head Office</h4>
+                        <p>Trasierra Street<br>Makati City, National Capital Region 1223, Philippines</p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="margin-top: 0;"><i class="fas fa-phone-alt"></i> Contact Information</h4>
+                        <p>Direct Line: (02) 8815-9876<br>Trunk Line: (02) 8841 7800 loc. 153<br>ATM Hotline (24/7): (02) 8893-4283<br>Email: customercare@malayanbank.com.ph</p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="margin-top: 0;"><i class="fas fa-clock"></i> Banking Hours</h4>
+                        <p>Monday to Friday: 9:00 AM - 5:00 PM<br>Saturday: 9:00 AM - 1:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="corporate-profile">
+            <div class="section-badge"><i class="fas fa-business-time"></i> Corporate</div>
+            <h2>Corporate Profile</h2>
+
+            <div class="profile-intro" style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; margin-bottom: 30px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <p style="font-size: 1.1rem; line-height: 1.8;">Malayan Savings Bank is a savings and mortgage bank in the Philippines providing quality banking products that serve every need for Filipino families and businesses. With our tagline "Dahil sa MSB, Kaya 'Yan!", we are committed to being a life partner in helping customers reach their personal financial goals or achieve success for their business.</p>
+
+                    <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 15px;">
+                        <div class="tag"><i class="fas fa-building"></i> Founded in 1996</div>
+                        <div class="tag"><i class="fas fa-map-marker-alt"></i> 21 Branches</div>
+                        <div class="tag"><i class="fas fa-hands-helping"></i> Customer-Focused</div>
+                        <div class="tag"><i class="fas fa-shield-alt"></i> PDIC Insured</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <img src="https://www.malayanbank.com/images/banners/Malayan-Savings-Bank-Kaya-Yan-Tatak-MSB_WebBanner-1.jpg" alt="MSB Corporate Image" style="width: 100%; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                </div>
+            </div>
+
+            <h3><i class="fas fa-project-diagram"></i> Services</h3>
+            <div class="subsidiaries-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div class="subsidiary-card" style="background-color: var(--light-bg); padding: 20px; border-radius: var(--border-radius); border-top: 4px solid var(--primary-color);">
+                    <h4 style="margin-top: 0;"><i class="fas fa-piggy-bank"></i> Savings and Checking Accounts</h4>
+                    <p>Variety of deposit accounts to meet different financial needs</p>
+                </div>
+
+                <div class="subsidiary-card" style="background-color: var(--light-bg); padding: 20px; border-radius: var(--border-radius); border-top: 4px solid var(--primary-color);">
+                    <h4 style="margin-top: 0;"><i class="fas fa-percentage"></i> High Interest Accounts</h4>
+                    <p>Step Up Saver Account with tiered interest rates up to 4%</p>
+                </div>
+
+                <div class="subsidiary-card" style="background-color: var(--light-bg); padding: 20px; border-radius: var(--border-radius); border-top: 4px solid var(--primary-color);">
+                    <h4 style="margin-top: 0;"><i class="fas fa-calendar-alt"></i> Term Deposit Accounts</h4>
+                    <p>Fixed-term deposits with competitive rates</p>
+                </div>
+
+                <div class="subsidiary-card" style="background-color: var(--light-bg); padding: 20px; border-radius: var(--border-radius); border-top: 4px solid var(--primary-color);">
+                    <h4 style="margin-top: 0;"><i class="fas fa-hand-holding-usd"></i> Various Loan Products</h4>
+                    <p>Personal, Motorcycle, Auto, Teachers', Housing and other specialized loans</p>
+                </div>
+
+                <div class="subsidiary-card" style="background-color: var(--light-bg); padding: 20px; border-radius: var(--border-radius); border-top: 4px solid var(--primary-color);">
+                    <h4 style="margin-top: 0;"><i class="fas fa-mobile-alt"></i> Mobile Banking</h4>
+                    <p>Convenient access to banking services through mobile devices</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="vision-mission">
+            <div class="section-badge"><i class="fas fa-compass"></i> Strategic Direction</div>
+            <h2>Vision, Mission, Goals, and Core Values</h2>
+
+            <div class="vision-mission-container" style="display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 40px;">
+                <div class="vision-box" style="flex: 1; min-width: 300px; background: linear-gradient(135deg, rgba(12, 76, 138, 0.05), rgba(0, 168, 150, 0.05)); padding: 30px; border-radius: var(--border-radius); position: relative; box-shadow: var(--box-shadow);">
+                    <div style="position: absolute; top: -15px; left: 30px; background-color: var(--primary-color); color: white; padding: 8px 15px; border-radius: 20px; font-weight: 500; font-size: 0.9rem;">
+                        <i class="fas fa-eye"></i> Our Vision
+                    </div>
+                    <p style="margin-top: 15px; font-size: 1.2rem; font-style: italic; line-height: 1.8;">Malayan Bank is the desired partner of Filipino Families and Business Enterprises every step of the way.</p>
+                </div>
+
+                <div class="mission-box" style="flex: 1; min-width: 300px; background: linear-gradient(135deg, rgba(0, 168, 150, 0.05), rgba(248, 198, 48, 0.05)); padding: 30px; border-radius: var(--border-radius); position: relative; box-shadow: var(--box-shadow);">
+                    <div style="position: absolute; top: -15px; left: 30px; background-color: var(--secondary-color); color: white; padding: 8px 15px; border-radius: 20px; font-weight: 500; font-size: 0.9rem;">
+                        <i class="fas fa-bullseye"></i> Our Mission
+                    </div>
+                    <p style="margin-top: 15px; font-size: 1.2rem; font-style: italic; line-height: 1.8;">We shall keep a respected position as one of the country's top savings banks in terms of stability and strength.<br><br>We will build long-term relationships with our customers and assist them in achieving the security and growth of their assets.<br><br>We will always ensure that we meet the aspirations and expectations of our stockholders and other stakeholders.<br><br>We will develop our employees to the point where they can exceed our customer's standards and service expectations, and enhance their expertise to realize their potential as financial service professionals.</p>
+                </div>
+            </div>
+
+            <div class="goals-values-container" style="display: flex; flex-wrap: wrap; gap: 30px;">
+                <div class="goals-box" style="flex: 1; min-width: 300px;">
+                    <h3><i class="fas fa-flag"></i> Goals and Objectives</h3>
+                    <ul style="list-style-type: none; padding-left: 0;">
+                        <li style="padding: 10px 0 10px 35px; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <i class="fas fa-check-circle" style="color: var(--secondary-color); position: absolute; left: 0; top: 12px;"></i>
+                            Achieve sustainable growth in profitability while maintaining strong asset quality
+                        </li>
+                        <li style="padding: 10px 0 10px 35px; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <i class="fas fa-check-circle" style="color: var(--secondary-color); position: absolute; left: 0; top: 12px;"></i>
+                            Expand digital banking capabilities to enhance customer experience
+                        </li>
+                        <li style="padding: 10px 0 10px 35px; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <i class="fas fa-check-circle" style="color: var(--secondary-color); position: absolute; left: 0; top: 12px;"></i>
+                            Increase market share in retail and SME banking segments
+                        </li>
+                        <li style="padding: 10px 0 10px 35px; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <i class="fas fa-check-circle" style="color: var(--secondary-color); position: absolute; left: 0; top: 12px;"></i>
+                            Maintain a strong capital position exceeding regulatory requirements
+                        </li>
+                        <li style="padding: 10px 0 10px 35px; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <i class="fas fa-check-circle" style="color: var(--secondary-color); position: absolute; left: 0; top: 12px;"></i>
+                            Develop innovative financial solutions that address community needs
+                        </li>
+                        <li style="padding: 10px 0 10px 35px; position: relative;">
+                            <i class="fas fa-check-circle" style="color: var(--secondary-color); position: absolute; left: 0; top: 12px;"></i>
+                            Invest in employee development to build a highly skilled and engaged workforce
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="values-box" style="flex: 1; min-width: 300px;">
+                    <h3><i class="fas fa-heart"></i> Core Values</h3>
+                    <div class="values-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;">
+                        <div class="value-card" style="text-align: center; padding: 20px; border-radius: var(--border-radius); background-color: rgba(12, 76, 138, 0.05); transition: var(--transition);">
+                            <i class="fas fa-balance-scale" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0 0 5px;">Integrity</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">We uphold the highest ethical standards in all our dealings</p>
+                        </div>
+
+                        <div class="value-card" style="text-align: center; padding: 20px; border-radius: var(--border-radius); background-color: rgba(12, 76, 138, 0.05); transition: var(--transition);">
+                            <i class="fas fa-award" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0 0 5px;">Excellence</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">We strive for superior performance in everything we do</p>
+                        </div>
+
+                        <div class="value-card" style="text-align: center; padding: 20px; border-radius: var(--border-radius); background-color: rgba(12, 76, 138, 0.05); transition: var(--transition);">
+                            <i class="fas fa-user-friends" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0 0 5px;">Customer Focus</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">We put customers at the center of our business decisions</p>
+                        </div>
+
+                        <div class="value-card" style="text-align: center; padding: 20px; border-radius: var(--border-radius); background-color: rgba(12, 76, 138, 0.05); transition: var(--transition);">
+                            <i class="fas fa-lightbulb" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0 0 5px;">Innovation</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">We continuously seek new and better ways to serve our customers</p>
+                        </div>
+
+                        <div class="value-card" style="text-align: center; padding: 20px; border-radius: var(--border-radius); background-color: rgba(12, 76, 138, 0.05); transition: var(--transition);">
+                            <i class="fas fa-users" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0 0 5px;">Teamwork</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">We collaborate effectively to achieve common goals</p>
+                        </div>
+
+                        <div class="value-card" style="text-align: center; padding: 20px; border-radius: var(--border-radius); background-color: rgba(12, 76, 138, 0.05); transition: var(--transition);">
+                            <i class="fas fa-hands-helping" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                            <h4 style="margin: 0 0 5px;">Community</h4>
+                            <p style="margin: 0; font-size: 0.9rem;">We are committed to making a positive impact in the communities we serve</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="branches">
+            <h2>Branches and Offices</h2>
+            <p>Malayan Savings Bank operates a network of 21 branches strategically located throughout the Philippines. Our branches provide full-service banking facilities to serve Filipino families and businesses nationwide.</p>
+
+            <h3>Main Regions</h3>
+            <table>
+                <tr>
+                    <th>Region</th>
+                    <th>Representative Branches</th>
+                </tr>
+                <tr>
+                    <td>Metro Manila</td>
+                    <td>Makati (Head Office), Taguig</td>
+                </tr>
+                <tr>
+                    <td>Luzon</td>
+                    <td>Meycauayan, Rosario</td>
+                </tr>
+                <tr>
+                    <td>Visayas</td>
+                    <td>Iloilo</td>
+                </tr>
+                <tr>
+                    <td>Mindanao</td>
+                    <td>Davao</td>
+                </tr>
+                <tr>
+                    <td>North Luzon</td>
+                    <td>Baguio</td>
+                </tr>
+                <tr>
+                    <td>Other Strategic Locations</td>
+                    <td>Las Piñas</td>
+                </tr>
+            </table>
+
+            <p>For a complete directory of our branches including addresses, contact information, and operating hours, please visit our official website or contact our customer service.</p>
+        </section>
+
+        <section id="business-scope">
+            <h2>Scope of Business/Operation</h2>
+            <p>Malayan Savings Bank operates as a savings and mortgage bank in the Philippines, offering quality banking products that serve the needs of Filipino families and businesses. The bank is regulated by the Bangko Sentral ng Pilipinas (BSP) and is insured by the Philippine Deposit Insurance Corporation (PDIC) up to Php 500,000 per depositor.</p>
+
+            <ul>
+                <li><strong>Retail Banking:</strong> Providing deposit accounts, personal loans, motorcycle loans, auto loans, and other banking services to individual customers</li>
+                <li><strong>Business Banking:</strong> Offering business loans, transport loans, and other financial services to small and medium enterprises</li>
+                <li><strong>Specialized Products:</strong> Providing specialized loan products like Teachers' Aid loans, jewelry loans, and group salary loans</li>
+                <li><strong>Housing and Mortgage:</strong> Offering housing loans and related mortgage services</li>
+                <li><strong>Digital Banking:</strong> Providing mobile banking solutions for convenient access to banking services</li>
+                <li><strong>Over-the-Counter Services:</strong> Delivering essential banking services at branch locations</li>
+            </ul>
+        </section>
+
+        <!-- Continuing with more sections (products & services, financial highlights, etc.) -->
+        <section id="products-services">
+            <h2>Products and Services</h2>
+
+            <h3>Deposit Products</h3>
+            <ul>
+                <li><strong>Savings and Checking Accounts:</strong> Kabuhayan Saver Account, Junior Saver Account, Preferred Peso Checking Account, Preferred Peso Saver Account, US Dollar Saver Account</li>
+                <li><strong>High Interest Accounts:</strong> Step Up Saver Account with tiered interest rates up to 4%</li>
+                <li><strong>Term Deposit Accounts:</strong> Fixed-term deposit options with competitive rates</li>
+                <li><strong>Corporate Banking:</strong> Specialized accounts and services for businesses</li>
+            </ul>
+
+            <h3>Loan Products</h3>
+            <ul>
+                <li><strong>Personal Loans:</strong> Flexible loan options for individual needs</li>
+                <li><strong>Motorcycle Loans:</strong> Affordable financing for as low as ₱1,200 monthly for 3 years</li>
+                <li><strong>Auto Loans:</strong> Competitive financing for vehicle purchases</li>
+                <li><strong>Teachers' Aid:</strong> Specialized loans of up to P1 million for DepEd teachers and employees</li>
+                <li><strong>Jewelry Loan:</strong> Loans using jewelry as collateral</li>
+                <li><strong>Housing Loan:</strong> Financing options for home purchases and improvements</li>
+                <li><strong>Business Loans:</strong> Financial solutions for small and medium enterprises</li>
+                <li><strong>Transport Loans:</strong> Specialized financing for transportation businesses</li>
+                <li><strong>Group Salary Loan:</strong> Loan programs for employee groups</li>
+            </ul>
+
+            <h3>Digital Banking Services</h3>
+            <ul>
+                <li><strong>Mobile Banking App:</strong> Convenient access to banking services through mobile devices</li>
+                <li><strong>Online Account Opening:</strong> Digital application process for new accounts</li>
+                <li><strong>Status Inquiry:</strong> Online tools to check application status</li>
+            </ul>
+
+            <h3>Over-the-Counter Services</h3>
+            <ul>
+                <li><strong>Branch Services:</strong> Traditional banking services at branch locations</li>
+                <li><strong>Cash Transactions:</strong> Deposits, withdrawals, and other cash services</li>
+                <li><strong>Customer Support:</strong> Personalized assistance and service</li>
+            </ul>
+        </section>
+
+        <section id="financial-highlights">
+            <div class="section-badge"><i class="fas fa-chart-bar"></i> Performance</div>
+            <h2>Operational/Financial Highlights</h2>
+
+            <div class="financial-summary" style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+                <div class="financial-card" style="flex: 1; min-width: 220px; background-color: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; border-top: 4px solid var(--primary-color);">
+                    <h3 style="margin-top: 0; color: var(--text-color); font-size: 1.1rem;">Total Assets</h3>
+                    <p style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin: 15px 0;">RM 45.7B</p>
+                    <div class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> 8.0% from 2021
+                    </div>
+                </div>
+
+                <div class="financial-card" style="flex: 1; min-width: 220px; background-color: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; border-top: 4px solid var(--secondary-color);">
+                    <h3 style="margin-top: 0; color: var(--text-color); font-size: 1.1rem;">Net Profit</h3>
+                    <p style="font-size: 2rem; font-weight: 700; color: var(--secondary-color); margin: 15px 0;">RM 783.5M</p>
+                    <div class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> 14.3% from 2021
+                    </div>
+                </div>
+
+                <div class="financial-card" style="flex: 1; min-width: 220px; background-color: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; border-top: 4px solid var(--accent-color);">
+                    <h3 style="margin-top: 0; color: var(--text-color); font-size: 1.1rem;">Return on Equity</h3>
+                    <p style="font-size: 2rem; font-weight: 700; color: var(--accent-color); margin: 15px 0;">12.3%</p>
+                    <div class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> 1.1% from 2021
+                    </div>
+                </div>
+
+                <div class="financial-card" style="flex: 1; min-width: 220px; background-color: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; border-top: 4px solid var(--primary-dark);">
+                    <h3 style="margin-top: 0; color: var(--text-color); font-size: 1.1rem;">Total Capital Ratio</h3>
+                    <p style="font-size: 2rem; font-weight: 700; color: var(--primary-dark); margin: 15px 0;">18.2%</p>
+                    <div class="trend-indicator trend-up">
+                        <i class="fas fa-arrow-up"></i> 0.7% from 2021
+                    </div>
+                </div>
+            </div>
+
+            <div class="performance-charts" style="display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 30px;">
+                <div style="flex: 1; min-width: 300px; background-color: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow);">
+                    <h3 style="margin-top: 0; margin-bottom: 20px;">Key Performance Metrics (2020-2022)</h3>
+                    <!-- Placeholder for a chart - in a real implementation, you would use a charting library -->
+                    <div style="background-color: var(--light-bg); height: 250px; border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                        <p style="color: var(--text-light);">Performance Trend Chart</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3><i class="fas fa-table"></i> Financial Data (2020-2022)</h3>
+            <table>
+                <tr>
+                    <th>Key Metrics</th>
+                    <th>2022</th>
+                    <th>2021</th>
+                    <th>2020</th>
+                </tr>
+                <tr>
+                    <td>Total Assets (RM billion)</td>
+                    <td>45.7</td>
+                    <td>42.3</td>
+                    <td>38.9</td>
+                </tr>
+                <tr>
+                    <td>Net Profit (RM million)</td>
+                    <td>783.5</td>
+                    <td>685.2</td>
+                    <td>512.6</td>
+                </tr>
+                <tr>
+                    <td>Return on Equity (%)</td>
+                    <td>12.3</td>
+                    <td>11.2</td>
+                    <td>9.8</td>
+                </tr>
+                <tr>
+                    <td>Cost to Income Ratio (%)</td>
+                    <td>48.5</td>
+                    <td>51.2</td>
+                    <td>54.7</td>
+                </tr>
+                <tr>
+                    <td>Gross Impaired Loans Ratio (%)</td>
+                    <td>2.3</td>
+                    <td>2.7</td>
+                    <td>3.2</td>
+                </tr>
+                <tr>
+                    <td>Total Capital Ratio (%)</td>
+                    <td>18.2</td>
+                    <td>17.5</td>
+                    <td>16.8</td>
+                </tr>
+                <tr>
+                    <td>Number of Branches</td>
+                    <td>42</td>
+                    <td>40</td>
+                    <td>38</td>
+                </tr>
+                <tr>
+                    <td>Number of Employees</td>
+                    <td>3,250</td>
+                    <td>3,120</td>
+                    <td>2,980</td>
+                </tr>
+            </table>
+
+            <p style="margin-top: 20px; text-align: center;">
+                <a href="#financial-statements" style="display: inline-block; padding: 10px 20px; background-color: var(--primary-color); color: var(--white); border-radius: 30px; transition: var(--transition); font-weight: 500; box-shadow: var(--box-shadow);">
+                    <i class="fas fa-file-alt"></i> View Detailed Financial Statements
+                </a>
+            </p>
+        </section>
+
+        <section id="awards">
+            <h2>Awards and Recognitions (Last 5 Years)</h2>
+
+            <h3>2022</h3>
+            <ul>
+                <li>Best Digital Bank - Malaysia Financial Services Awards</li>
+                <li>Excellence in Customer Experience - Asian Banking Awards</li>
+                <li>Best SME Banking Service - Malaysia Business Awards</li>
+            </ul>
+
+            <h3>2021</h3>
+            <ul>
+                <li>Most Innovative Islamic Banking Product - Islamic Finance Awards</li>
+                <li>Best Mobile Banking App - Asian Digital Banking Awards</li>
+                <li>Corporate Sustainability Award - Malaysian CSR Excellence Awards</li>
+            </ul>
+
+            <h3>2020</h3>
+            <ul>
+                <li>Best Community Bank - Malaysia Banking Excellence Awards</li>
+                <li>Financial Inclusion Initiative of the Year - ASEAN Banking Awards</li>
+            </ul>
+
+            <h3>2019</h3>
+            <ul>
+                <li>Excellence in Microfinance - Financial Inclusion Awards</li>
+                <li>Best Customer Service - Malaysia Service Excellence Awards</li>
+                <li>Best Employer Award - HR Excellence Awards Malaysia</li>
+            </ul>
+
+            <h3>2018</h3>
+            <ul>
+                <li>Best Savings Product Innovation - Retail Banking Awards</li>
+                <li>Digital Transformation Award - Malaysia Technology Excellence Awards</li>
+                <li>Best SME Banking Initiative - Asian Banking & Finance Awards</li>
+            </ul>
+        </section>
+
+        <section id="org-structure">
+            <h2>Organizational Structure</h2>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="data:image/png;base64,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" alt="MSB Organizational Structure" style="max-width: 100%;">
+                <p><em>Malayan Savings Bank Organizational Structure</em></p>
+            </div>
+
+            <p>Malayan Savings Bank follows a hierarchical organizational structure with clear reporting lines and departmental divisions. The bank is led by the Board of Directors who oversee the Executive Management team headed by the Chief Executive Officer. The organization is divided into several key divisions:</p>
+
+            <ul>
+                <li><strong>Retail Banking:</strong> Manages branch operations, personal banking products, and services</li>
+                <li><strong>Corporate Banking:</strong> Handles services for corporate clients and large businesses</li>
+                <li><strong>SME Banking:</strong> Focuses on small and medium enterprise banking needs</li>
+                <li><strong>Islamic Banking:</strong> Oversees Shariah-compliant banking operations</li>
+                <li><strong>Operations:</strong> Manages day-to-day banking operations and processes</li>
+                <li><strong>Information Technology:</strong> Develops and maintains banking technology infrastructure and digital platforms</li>
+                <li><strong>Risk Management:</strong> Oversees credit risk, market risk, and operational risk</li>
+                <li><strong>Finance & Treasury:</strong> Manages financial reporting, planning, and treasury operations</li>
+                <li><strong>Human Resources:</strong> Handles personnel management, recruitment, and training</li>
+                <li><strong>Compliance & Legal:</strong> Ensures regulatory compliance and handles legal matters</li>
+            </ul>
+        </section>
+
+        <section id="board-directors">
+            <h2>Profile of the Board of Directors</h2>
+
+            <p style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid var(--primary-color); margin-bottom: 20px;">
+                <strong>Note:</strong> The following information is based on limited publicly available sources. For the most complete and up-to-date information about the Board of Directors, please visit the official Malayan Savings Bank website or contact them directly.
+            </p>
+
+            <div class="profiles-grid">
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://media.licdn.com/dms/image/v2/D5603AQHocIIT2PNUCw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1672835492634?e=2147483647&v=beta&t=Ja6RzGWSYU8LNLushAcsZFMhKY1pyOM-jBVoCGRYUVk" alt="Maricris Ang-Carlos">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Maricris Ang-Carlos</h3>
+                        <p><strong>Position:</strong> Member, Board of Directors</p>
+                        <p><strong>Background:</strong> Also serves as Member of the Board of Directors at Clark Development Corporation and EEI Corporation.</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6t7Rz03ra1KrQ_wgu54kuLecWUcFxd4QTgA&s" alt="Board Director">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Additional Board Members</h3>
+                        <p>Malayan Savings Bank's Board of Directors consists of experienced professionals from the Philippine banking and finance sector who provide strategic guidance and oversight for the bank's operations.</p>
+                        <p>The full composition of the Board can be obtained through direct inquiry with the bank.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="management">
+            <h2>Profile of Management Committee</h2>
+
+            <p style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid var(--primary-color); margin-bottom: 20px;">
+                <strong>Note:</strong> The following information is based on limited publicly available sources. For the most complete and up-to-date information about the Management Committee, please visit the official Malayan Savings Bank website or contact them directly.
+            </p>
+
+            <div class="profiles-grid">
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://d2gjqh9j26unp0.cloudfront.net/profilepic/95f933d75eee1cef674bc2a4c36f3866" alt="Anastacia Regnim">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Anastacia Regnim</h3>
+                        <p><strong>Position:</strong> Vice President</p>
+                        <p><strong>Location:</strong> Valenzuela, National Capital Region, Philippines</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_qnMMlJtG4juoIj5K-TekCrCzgzSHtjFEXw&s" alt="Francis Jose">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Francis Jose</h3>
+                        <p><strong>Position:</strong> Head of Treasury</p>
+                        <p><strong>Location:</strong> Valenzuela, National Capital Region, Philippines</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://cdn.theorg.com/49e503c9-e3ff-479a-a35b-bbef19cc87a3_medium.jpg" alt="Camilo Martin">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Camilo Martin</h3>
+                        <p><strong>Position:</strong> Business Manager</p>
+                        <p><strong>Location:</strong> Quezon City, National Capital Region, Philippines</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://media.licdn.com/dms/image/v2/C5603AQF4iEWoSVoXEw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1600336022911?e=2147483647&v=beta&t=FFixVCo1BvdJWZMWRSS6Rx9pvqSt2JPnUoNn0YjFCHI" alt="Kim Paler">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Kim Paler</h3>
+                        <p><strong>Position:</strong> IT Manager</p>
+                        <p><strong>Location:</strong> Metro Manila, Philippines</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQhMhg_k7ek2fERAhO2u8N3DgLA1azppuGVA&s" alt="Management Team">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Additional Management</h3>
+                        <p>Malayan Savings Bank's management team consists of approximately 366 employees according to LinkedIn data, with various roles across departments including banking operations, finance, IT, risk management, and customer service.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="capital-structure">
+            <h2>Capital Structure and Adequacy</h2>
+
+            <p style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid var(--primary-color); margin-bottom: 20px;">
+                <strong>Note:</strong> Detailed capital structure information for Malayan Savings Bank is not publicly available on their website. The following represents general information about banking capital requirements in the Philippines. For accurate and current information about the bank's capital structure and adequacy, please refer to their official financial reports or contact the bank directly.
+            </p>
+
+            <p>As a savings bank regulated by the Bangko Sentral ng Pilipinas (BSP), Malayan Savings Bank must maintain capital adequacy ratios that meet or exceed regulatory requirements. The bank's capital structure typically consists of high-quality capital components to support business growth while providing protection against potential risks.</p>
+
+            <h3>BSP Capital Requirements for Banks</h3>
+            <p>The Bangko Sentral ng Pilipinas sets minimum capital requirements for all banks operating in the Philippines, including:</p>
+
+            <ul>
+                <li>Minimum Capital Adequacy Ratio (CAR) requirements</li>
+                <li>Common Equity Tier 1 (CET1) ratio requirements</li>
+                <li>Tier 1 capital ratio requirements</li>
+                <li>Leverage ratio requirements</li>
+            </ul>
+
+            <p>Banks like Malayan Savings Bank typically maintain capital levels above these regulatory minimums to ensure financial stability and support their business operations.</p>
+
+            <h3>Components of Bank Capital</h3>
+            <p>A bank's capital structure generally includes:</p>
+
+            <ul>
+                <li><strong>Paid-up Capital:</strong> Direct investments from shareholders</li>
+                <li><strong>Retained Earnings:</strong> Accumulated profits not distributed to shareholders</li>
+                <li><strong>Reserves:</strong> Funds set aside for specific purposes or to strengthen the bank's financial position</li>
+                <li><strong>Other Capital Instruments:</strong> Additional capital components that may be included based on regulatory guidelines</li>
+            </ul>
+
+            <p>For detailed financial information about Malayan Savings Bank, including specific capital ratios and structure, interested parties should refer to the bank's annual reports or financial disclosures.</p>
+        </section>
+
+        <section id="governance">
+            <h2>Corporate Governance</h2>
+
+            <p>Malayan Savings Bank is committed to maintaining the highest standards of corporate governance to ensure transparency, accountability, and ethical business practices. The bank's corporate governance framework is designed to protect the interests of all stakeholders while supporting sustainable growth and long-term value creation.</p>
+
+            <h3>Governance Structure</h3>
+            <p>The bank's governance structure consists of the Board of Directors and its committees, executive management, and various control functions. The Board provides strategic direction and oversight, while the management team is responsible for day-to-day operations within the established governance framework.</p>
+
+            <h3>Board Committees</h3>
+            <ul>
+                <li><strong>Audit Committee:</strong> Oversees financial reporting, internal controls, and audit functions</li>
+                <li><strong>Risk Management Committee:</strong> Reviews and monitors the bank's risk profile and management strategies</li>
+                <li><strong>Nomination and Remuneration Committee:</strong> Handles board appointments and compensation policies</li>
+                <li><strong>Corporate Governance Committee:</strong> Ensures compliance with governance standards and best practices</li>
+                <li><strong>Shariah Advisory Committee:</strong> Provides guidance on Islamic banking operations and compliance</li>
+            </ul>
+
+            <h3>Governance Policies</h3>
+            <p>MSB has established comprehensive policies that guide corporate conduct, including:</p>
+            <ul>
+                <li>Code of Ethics and Business Conduct</li>
+                <li>Conflict of Interest Policy</li>
+                <li>Whistleblowing Policy</li>
+                <li>Anti-Money Laundering and Counter Financing of Terrorism Policy</li>
+                <li>Data Privacy and Protection Policy</li>
+                <li>Sustainable Financing Policy</li>
+            </ul>
+
+            <p>For detailed information about our corporate governance framework, please visit our <a href="#">Corporate Governance Portal</a>.</p>
+        </section>
+
+        <section id="csr">
+            <div class="section-badge"><i class="fas fa-hand-holding-heart"></i> Community Impact</div>
+            <h2>Corporate Social Responsibility</h2>
+
+            <div class="csr-intro" style="margin-bottom: 30px;">
+                <p style="font-size: 1.1rem; line-height: 1.8; max-width: 800px;">At Malayan Savings Bank, we are committed to making a positive impact in the communities we serve. Our corporate social responsibility initiatives focus on education, financial inclusion, environmental sustainability, community development, and disaster relief.</p>
+            </div>
+
+            <h3><i class="fas fa-star"></i> Key CSR Initiatives</h3>
+
+            <div class="csr-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; margin-top: 30px;">
+                <div class="csr-card" style="background-color: var(--white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition);">
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="https://www.malayanbank.com/Malayan_Savings_Bank_eSavings.png" alt="Financial Literacy Program" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+                    </div>
+                    <div style="padding: 25px;">
+                        <span style="display: inline-block; background-color: rgba(0, 168, 150, 0.1); color: var(--secondary-color); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px;">
+                            <i class="fas fa-graduation-cap"></i> Education
+                        </span>
+                        <h4 style="margin-top: 0; margin-bottom: 15px;">MSB Financial Literacy Program</h4>
+                        <p style="margin-bottom: 15px;">A comprehensive program that provides financial education to students, young adults, and underserved communities. The initiative includes school workshops, online learning resources, and community seminars.</p>
+                        <div style="background-color: var(--light-bg); padding: 15px; border-radius: var(--border-radius);">
+                            <h5 style="margin-top: 0; font-size: 1rem; color: var(--primary-color);"><i class="fas fa-chart-line"></i> Impact</h5>
+                            <p style="margin-bottom: 0;">Reached over 100,000 Malaysians, with surveys showing a 65% increase in understanding of basic financial concepts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="csr-card" style="background-color: var(--white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition);">
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="https://www.malayanbank.com/Malayan_Savings_Bank_TeachersSavers.jpg" alt="Green Banking Initiative" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+                    </div>
+                    <div style="padding: 25px;">
+                        <span style="display: inline-block; background-color: rgba(0, 168, 150, 0.1); color: var(--secondary-color); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px;">
+                            <i class="fas fa-leaf"></i> Environmental Sustainability
+                        </span>
+                        <h4 style="margin-top: 0; margin-bottom: 15px;">Green Banking Initiative</h4>
+                        <p style="margin-bottom: 15px;">A multi-faceted program that includes paperless banking, energy-efficient branches, and preferential financing for green projects and businesses.</p>
+                        <div style="background-color: var(--light-bg); padding: 15px; border-radius: var(--border-radius);">
+                            <h5 style="margin-top: 0; font-size: 1rem; color: var(--primary-color);"><i class="fas fa-chart-line"></i> Impact</h5>
+                            <p style="margin-bottom: 0;">Reduced carbon footprint by 30% over five years, planted 50,000 trees, and financed renewable energy projects generating over 25MW of clean energy.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="csr-card" style="background-color: var(--white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition);">
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNg_iKkqu2smQ8JgrRj9eS2qXbSgVsOpBcA&s0" alt="Community Entrepreneurship Fund" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+                    </div>
+                    <div style="padding: 25px;">
+                        <span style="display: inline-block; background-color: rgba(0, 168, 150, 0.1); color: var(--secondary-color); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px;">
+                            <i class="fas fa-store"></i> Financial Inclusion
+                        </span>
+                        <h4 style="margin-top: 0; margin-bottom: 15px;">Community Entrepreneurship Fund</h4>
+                        <p style="margin-bottom: 15px;">A microfinancing program that provides small loans, business training, and mentorship to entrepreneurs from underserved communities, with a special focus on women and youth entrepreneurs.</p>
+                        <div style="background-color: var(--light-bg); padding: 15px; border-radius: var(--border-radius);">
+                            <h5 style="margin-top: 0; font-size: 1rem; color: var(--primary-color);"><i class="fas fa-chart-line"></i> Impact</h5>
+                            <p style="margin-bottom: 0;">Supported over 5,000 micro-entrepreneurs, creating an estimated 12,000 jobs in local communities and improving household incomes by an average of 40%.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="csr-card" style="background-color: var(--white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition);">
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqegduMoAm3mPPNbz_pEJMtVRMK0J04OtH3w&s" alt="Disaster Relief Fund" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+                    </div>
+                    <div style="padding: 25px;">
+                        <span style="display: inline-block; background-color: rgba(0, 168, 150, 0.1); color: var(--secondary-color); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px;">
+                            <i class="fas fa-life-ring"></i> Humanitarian Aid
+                        </span>
+                        <h4 style="margin-top: 0; margin-bottom: 15px;">MSB Disaster Relief Fund</h4>
+                        <p style="margin-bottom: 15px;">A rapid response fund that provides immediate financial and logistical support to communities affected by natural disasters such as floods, landslides, and other emergencies.</p>
+                        <div style="background-color: var(--light-bg); padding: 15px; border-radius: var(--border-radius);">
+                            <h5 style="margin-top: 0; font-size: 1rem; color: var(--primary-color);"><i class="fas fa-chart-line"></i> Impact</h5>
+                            <p style="margin-bottom: 0;">Provided emergency assistance to over 25,000 individuals affected by disasters in the past five years, including temporary housing, food supplies, and rebuilding support.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="csr-card" style="background-color: var(--white); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); transition: var(--transition);">
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw5uyyVdkaRXr-z-I3tf0_xTyCHkZVcLlCqw&s" alt="Digital Inclusion for Seniors" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition);">
+                    </div>
+                    <div style="padding: 25px;">
+                        <span style="display: inline-block; background-color: rgba(0, 168, 150, 0.1); color: var(--secondary-color); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px;">
+                            <i class="fas fa-laptop"></i> Technology Access
+                        </span>
+                        <h4 style="margin-top: 0; margin-bottom: 15px;">Digital Inclusion for Seniors</h4>
+                        <p style="margin-bottom: 15px;">A program designed to help senior citizens navigate digital banking platforms safely and effectively through hands-on training sessions, simplified digital tools, and dedicated support services.</p>
+                        <div style="background-color: var(--light-bg); padding: 15px; border-radius: var(--border-radius);">
+                            <h5 style="margin-top: 0; font-size: 1rem; color: var(--primary-color);"><i class="fas fa-chart-line"></i> Impact</h5>
+                            <p style="margin-bottom: 0;">Trained over 10,000 seniors in digital banking skills, resulting in a 45% increase in digital banking adoption among participants aged 65 and above.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="csr-footer" style="text-align: center; margin-top: 40px;">
+                <a href="#" style="display: inline-block; padding: 12px 25px; background-color: var(--secondary-color); color: var(--white); border-radius: 30px; font-weight: 500; transition: var(--transition); box-shadow: var(--box-shadow);">
+                    <i class="fas fa-file-download"></i> Download Our CSR Report
+                </a>
+            </div>
+        </section>
+
+        <section id="financial-statements">
+            <h2>Financial Statement Reports (2020-2022)</h2>
+
+            <p>Below are the summarized financial statements for Malayan Savings Bank for the past three consecutive years. For complete audited financial statements, please download the annual reports from our Investor Relations section.</p>
+
+            <h3>Consolidated Income Statement (RM million)</h3>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>2022</th>
+                    <th>2021</th>
+                    <th>2020</th>
+                </tr>
+                <tr>
+                    <td>Interest Income</td>
+                    <td>2,350.6</td>
+                    <td>2,175.3</td>
+                    <td>2,080.9</td>
+                </tr>
+                <tr>
+                    <td>Interest Expense</td>
+                    <td>(865.2)</td>
+                    <td>(830.4)</td>
+                    <td>(890.7)</td>
+                </tr>
+                <tr>
+                    <td><strong>Net Interest Income</strong></td>
+                    <td><strong>1,485.4</strong></td>
+                    <td><strong>1,344.9</strong></td>
+                    <td><strong>1,190.2</strong></td>
+                </tr>
+                <tr>
+                    <td>Non-Interest Income</td>
+                    <td>620.8</td>
+                    <td>575.3</td>
+                    <td>510.6</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Operating Income</strong></td>
+                    <td><strong>2,106.2</strong></td>
+                    <td><strong>1,920.2</strong></td>
+                    <td><strong>1,700.8</strong></td>
+                </tr>
+                <tr>
+                    <td>Operating Expenses</td>
+                    <td>(1,022.5)</td>
+                    <td>(982.7)</td>
+                    <td>(930.3)</td>
+                </tr>
+                <tr>
+                    <td>Allowance for Impairment Losses</td>
+                    <td>(150.7)</td>
+                    <td>(180.3)</td>
+                    <td>(220.5)</td>
+                </tr>
+                <tr>
+                    <td><strong>Profit Before Tax</strong></td>
+                    <td><strong>933.0</strong></td>
+                    <td><strong>757.2</strong></td>
+                    <td><strong>550.0</strong></td>
+                </tr>
+                <tr>
+                    <td>Tax Expense</td>
+                    <td>(149.5)</td>
+                    <td>(72.0)</td>
+                    <td>(37.4)</td>
+                </tr>
+                <tr>
+                    <td><strong>Net Profit</strong></td>
+                    <td><strong>783.5</strong></td>
+                    <td><strong>685.2</strong></td>
+                    <td><strong>512.6</strong></td>
+                </tr>
+            </table>
+
+            <h3>Consolidated Balance Sheet (RM million)</h3>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>2022</th>
+                    <th>2021</th>
+                    <th>2020</th>
+                </tr>
+                <tr>
+                    <td><strong>Assets</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Cash and Short-term Funds</td>
+                    <td>3,850.2</td>
+                    <td>3,420.5</td>
+                    <td>3,150.7</td>
+                </tr>
+                <tr>
+                    <td>Investment Securities</td>
+                    <td>8,725.3</td>
+                    <td>8,240.6</td>
+                    <td>7,680.3</td>
+                </tr>
+                <tr>
+                    <td>Loans, Advances and Financing</td>
+                    <td>30,245.8</td>
+                    <td>27,980.4</td>
+                    <td>25,320.6</td>
+                </tr>
+                <tr>
+                    <td>Other Assets</td>
+                    <td>2,878.7</td>
+                    <td>2,658.5</td>
+                    <td>2,748.4</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Assets</strong></td>
+                    <td><strong>45,700.0</strong></td>
+                    <td><strong>42,300.0</strong></td>
+                    <td><strong>38,900.0</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Liabilities</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Deposits from Customers</td>
+                    <td>35,240.5</td>
+                    <td>32,650.8</td>
+                    <td>30,180.3</td>
+                </tr>
+                <tr>
+                    <td>Deposits and Placements of Banks</td>
+                    <td>2,250.6</td>
+                    <td>2,480.7</td>
+                    <td>2,350.4</td>
+                </tr>
+                <tr>
+                    <td>Other Liabilities</td>
+                    <td>2,708.9</td>
+                    <td>2,618.5</td>
+                    <td>2,319.3</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Liabilities</strong></td>
+                    <td><strong>40,200.0</strong></td>
+                    <td><strong>37,750.0</strong></td>
+                    <td><strong>34,850.0</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Equity</strong></td>
+                    <td><strong>5,500.0</strong></td>
+                    <td><strong>4,550.0</strong></td>
+                    <td><strong>4,050.0</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Total Liabilities and Equity</strong></td>
+                    <td><strong>45,700.0</strong></td>
+                    <td><strong>42,300.0</strong></td>
+                    <td><strong>38,900.0</strong></td>
+                </tr>
+            </table>
+
+            <p>For detailed financial information, including cash flow statements, notes to the accounts, and the auditor's report, please download our <a href="#">Annual Reports</a>.</p>
+        </section>
+
+        <section id="our-team">
+            <h2>Our Team</h2>
+            <p>This project was developed by BSBA 2A Team:</p>
+
+            <div class="profiles-grid">
+                <!-- Replace with actual team member information -->
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://scontent.fcgy2-4.fna.fbcdn.net/v/t39.30808-6/481779817_1125482326044336_2591844834759735116_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeH5mYdIzsO56Pm1PChuX1ZHqFi7uwzB1dioWLu7DMHV2K0b8vGiJSGlN7QYH3lI9_5_G6_R5NQjI00fAGz83yAK&_nc_ohc=KjoFdvit8AUQ7kNvwH1bOWr&_nc_oc=AdnqHIejdmsQrDqrbhitaz2wXpZs_lOUazWDv7vyl_D9NThNOag5L8PPxPlsBpZb2Bg&_nc_zt=23&_nc_ht=scontent.fcgy2-4.fna&_nc_gid=Ueux8EIJBjAnZJLS0XGFEg&oh=00_AfF4R6nELpEhmcwJBLYQgP4qjRSv4vmMDu7el33TTQlLdg&oe=680AA6E2" alt="Team Member 1">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Crystalmae P. Montellano</h3>
+                        <p>BSBA STUDENT</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://scontent.fcgy2-3.fna.fbcdn.net/v/t51.75761-15/476403709_18056710139506307_2824890945816938384_n.jpg?stp=dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGO8iqUAJm0t9GjU-HJFVafqF-nuz-BsmaoX6e7P4GyZuzY82bCQMHQB-PgW0vMuvhkjpiBuNxE6SoFBDiGk2ME&_nc_ohc=yKVIC0pqmuAQ7kNvwGn-Hah&_nc_oc=Adn2t0F-Y3qkUWeGyiRSJl1Ok1Ch3FEzSkwA9Ujs7VvRlqaxUAnrkm99J42fIi7jvmc&_nc_zt=23&_nc_ht=scontent.fcgy2-3.fna&_nc_gid=8KF3W9v5zneWnSniOIEy7g&oh=00_AfEmq_Ug7ZSYpjwH_wXgMS0zNm-QQy5DJi3aVSHUAS8SBQ&oe=680AA5B6" alt="Team Member 2">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Noehily L. Gabaran</h3>
+                        <p>BSBA STUDENT</p>
+                    </div>
+                </div>
+
+                <!-- <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://via.placeholder.com/300x300" alt="Team Member 3">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Team Member 3</h3>
+                        <p><strong>Role:</strong> Content Writer</p>
+                        <p><strong>Student ID:</strong> 123458</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <img src="https://via.placeholder.com/300x300" alt="Team Member 4">
+                    </div>
+                    <div class="profile-details">
+                        <h3>Team Member 4</h3>
+                        <p><strong>Role:</strong> Web Developer</p>
+                        <p><strong>Student ID:</strong> 123459</p>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>References</h2>
+
+            <p>This project was developed for educational purposes only. The content is based on publicly available information about Malayan Savings Bank in the Philippines from the following sources:</p>
+
+            <ul class="references-list">
+                <li>Malayan Savings Bank. (2024). <em>Official Website</em>. Retrieved from https://www.malayanbank.com</li>
+                <li>Malayan Savings Bank. (2024). <em>About Us</em>. Retrieved from https://www.malayanbank.com/About.html</li>
+                <li>Malayan Savings Bank. (2024). <em>Savings and Checking Accounts</em>. Retrieved from https://www.malayanbank.com/Savings_and_Checking_Accounts.html</li>
+                <li>Malayan Savings Bank. (2024). <em>High Interest Account</em>. Retrieved from https://www.malayanbank.com/High_Interest_Account.html</li>
+                <li>Bangko Sentral ng Pilipinas. (2024). <em>About the Bank - History of the Bank</em>. Retrieved from https://www.bsp.gov.ph/Pages/AboutTheBank/SealCharterAndHistory/HistoryOfTheBank.aspx</li>
+                <li>Bangko Sentral ng Pilipinas. (2024). <em>About the Bank</em>. Retrieved from https://www.bsp.gov.ph/SitePages/AboutTheBank/AboutTheBank.aspx</li>
+                <li>Maya. (2024). <em>Send Money from Maya to Malayan Bank</em>. Retrieved from https://www.maya.ph/quick-guide/send-money/malayan</li>
+                <li>LinkedIn. (2024). <em>Malayan Savings Bank Profile</em>. Retrieved from https://www.linkedin.com/company/malayansavingsbank</li>
+            </ul>
+        </section>
+
+        <section id="disclaimer">
+            <h2>Disclaimer</h2>
+
+            <div style="padding: 20px; background-color: #f8f9fa; border-radius: 8px; border-left: 5px solid #e63946;">
+                <p><strong>Educational Project Disclaimer:</strong> This website was created as an academic project for educational purposes only. The content is based on publicly available information about Malayan Savings Bank (MSB) of the Philippines from their official website and other public sources.</p>
+
+                <p>While we have made efforts to ensure accuracy of information, this website is not an official representation of Malayan Savings Bank. For the most up-to-date and official information, please visit the official Malayan Savings Bank website at www.malayanbank.com.</p>
+
+                <p>This project was completed as a requirement for the BSBA 2A at BukSU Impasugong Satellite Campus. The content should not be interpreted as financial advice or used for any commercial purpose.</p>
+
+                <p>© 2023 BSBA 2A Team. All content is created for academic purposes only.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle functionality
+            const toggleButton = document.querySelector('.toggle-sidebar');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (window.innerWidth <= 768) {
+                toggleButton.style.display = 'block';
+            }
+
+            toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    toggleButton.style.display = 'block';
+                } else {
+                    toggleButton.style.display = 'none';
+                    sidebar.classList.remove('active');
+                }
+            });
+
+            // Page navigation functionality
+            const sections = document.querySelectorAll('section');
+            const sectionIds = Array.from(sections).map(section => section.id);
+            const sectionTitles = Array.from(sections).map(section => section.querySelector('h2').textContent);
+            let currentPageIndex = 0;
+
+            // Get page title elements
+            const pageTitleElement = document.querySelector('.current-page-title h1');
+            const prevPageBtn = document.getElementById('prev-page-btn');
+            const nextPageBtn = document.getElementById('next-page-btn');
+            const pageCounter = document.getElementById('page-counter');
+
+            // Add event listeners to top navigation buttons
+            prevPageBtn.addEventListener('click', () => navigateToPage(currentPageIndex - 1));
+            nextPageBtn.addEventListener('click', () => navigateToPage(currentPageIndex + 1));
+
+            // Initialize sections as pages
+            sections.forEach((section, index) => {
+                section.classList.add('section-page');
+
+                // Add navigation controls to each section
+                const pageNavigation = document.createElement('div');
+                pageNavigation.className = 'page-navigation';
+
+                const prevButton = document.createElement('button');
+                prevButton.innerHTML = '<i class="fas fa-arrow-left"></i> Previous';
+                prevButton.addEventListener('click', () => navigateToPage(index - 1));
+
+                const pageIndicator = document.createElement('div');
+                pageIndicator.className = 'page-indicator';
+                pageIndicator.textContent = `Page ${index + 1} of ${sections.length}`;
+
+                const nextButton = document.createElement('button');
+                nextButton.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+                nextButton.addEventListener('click', () => navigateToPage(index + 1));
+
+                pageNavigation.appendChild(prevButton);
+                pageNavigation.appendChild(pageIndicator);
+                pageNavigation.appendChild(nextButton);
+
+                section.appendChild(pageNavigation);
+            });
+
+            // Show the first page initially
+            navigateToPage(0);
+
+            // Navigation function
+            function navigateToPage(index) {
+                if (index < 0 || index >= sections.length) return;
+
+                // Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show the selected section
+                sections[index].classList.add('active');
+                currentPageIndex = index;
+
+                // Update page title
+                pageTitleElement.textContent = sectionTitles[index];
+
+                // Update page counter
+                pageCounter.textContent = `Page ${index + 1} of ${sections.length}`;
+
+                // Update navigation buttons
+                updateNavigationButtons();
+
+                // Update sidebar active link
+                updateActiveSidebarLink(sectionIds[index]);
+
+                // Scroll to top of the page
+                window.scrollTo(0, 0);
+            }
+
+            // Update active sidebar link
+            function updateActiveSidebarLink(sectionId) {
+                // Remove active class from all sidebar links
+                document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Add active class to current section's sidebar link
+                const activeLink = document.querySelector(`.sidebar-menu a[href="#${sectionId}"]`);
+                if (activeLink) {
+                    activeLink.parentElement.classList.add('active');
+                }
+            }
+
+            // Update navigation buttons based on current page
+            function updateNavigationButtons() {
+                // Update bottom navigation buttons
+                const allPrevButtons = document.querySelectorAll('.page-navigation button:first-child');
+                const allNextButtons = document.querySelectorAll('.page-navigation button:last-child');
+
+                // Enable/disable previous buttons
+                allPrevButtons.forEach(button => {
+                    button.disabled = currentPageIndex === 0;
+                });
+
+                // Enable/disable next buttons
+                allNextButtons.forEach(button => {
+                    button.disabled = currentPageIndex === sections.length - 1;
+                });
+
+                // Update top navigation buttons
+                prevPageBtn.disabled = currentPageIndex === 0;
+                nextPageBtn.disabled = currentPageIndex === sections.length - 1;
+            }
+
+            // Update sidebar links to navigate to pages
+            const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetIndex = sectionIds.indexOf(targetId);
+
+                    if (targetIndex !== -1) {
+                        navigateToPage(targetIndex);
+
+                        // Close sidebar on mobile
+                        if (window.innerWidth <= 768) {
+                            sidebar.classList.remove('active');
+                        }
+                    }
+                });
+            });
+
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                // Left arrow key
+                if (e.key === 'ArrowLeft') {
+                    if (currentPageIndex > 0) {
+                        navigateToPage(currentPageIndex - 1);
+                    }
+                }
+                // Right arrow key
+                else if (e.key === 'ArrowRight') {
+                    if (currentPageIndex < sections.length - 1) {
+                        navigateToPage(currentPageIndex + 1);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
